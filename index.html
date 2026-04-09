@@ -251,18 +251,20 @@
             transform: scale(0.96);
         }
 
-        .unbind-now-btn {
+        .howto-unbind-btn {
             background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
             color: white;
-            padding: 14px;
+            padding: 12px 8px;
             border: none;
-            border-radius: 30px;
-            font-size: 16px;
-            font-weight: bold;
+            border-radius: 14px;
             cursor: pointer;
-            margin: 10px 0;
-            width: 100%;
-            box-shadow: 0 4px 15px rgba(255,152,0,0.3);
+            font-size: 13px;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .howto-unbind-btn:active {
+            transform: scale(0.96);
         }
 
         .code-input {
@@ -313,19 +315,6 @@
             backdrop-filter: blur(4px);
         }
 
-        .lang-btn {
-            background: #2e7d32;
-            color: white;
-            padding: 14px 20px;
-            border: none;
-            border-radius: 60px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            margin: 8px;
-            width: 120px;
-        }
-
         .input-area {
             display: flex;
             gap: 10px;
@@ -349,7 +338,29 @@
             cursor: pointer;
         }
 
-        /* Admin Panel Professional Table Styles */
+        .step-nav {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 15px 0;
+        }
+
+        .step-btn {
+            background: #2e7d32;
+            color: white;
+            padding: 10px 24px;
+            border: none;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .step-btn-back {
+            background: #6c757d;
+        }
+
+        /* Admin Panel Styles */
         .admin-table {
             width: 100%;
             border-collapse: collapse;
@@ -522,6 +533,38 @@
         setTimeout(() => {
             btnElement.innerText = originalText;
         }, 1500);
+    }
+    
+    // ============ HOW TO UNBIND GUIDE ============
+    async function startHowToUnbindGuide(chatBox) {
+        currentIssue = 'howto_unbind';
+        
+        addMessage(chatBox, 'bot', "🔓 Welcome to the Unbind Guide! I'll help you step by step to unbind your account professionally.");
+        await showTyping(chatBox, 3000);
+        
+        addMessage(chatBox, 'bot', "📌 <strong>STEP 1:</strong> Open Telegram and search for this bot:", true);
+        addMessage(chatBox, 'bot', "<a href='https://t.me/uk_member_robot' target='_blank' class='telegram-link'>🤖 @uk_member_robot</a>", true);
+        await showTyping(chatBox, 4000);
+        
+        addMessage(chatBox, 'bot', "📌 <strong>STEP 2:</strong> Click on START or type /start to begin.", true);
+        await showTyping(chatBox, 4000);
+        
+        addMessage(chatBox, 'bot', "📌 <strong>STEP 3:</strong> Type /help in the bot and press send.", true);
+        await showTyping(chatBox, 4000);
+        
+        addMessage(chatBox, 'bot', "📌 <strong>STEP 4:</strong> Click on the 'Unbind' or 'Unbind Account' option in the bot menu.", true);
+        await showTyping(chatBox, 4000);
+        
+        addMessage(chatBox, 'bot', "📌 <strong>STEP 5:</strong> The bot will generate a unique UNBIND CODE for you. Copy that code.", true);
+        await showTyping(chatBox, 4000);
+        
+        addMessage(chatBox, 'bot', "📌 <strong>STEP 6:</strong> Paste the unbind code below and click SUBMIT.", true);
+        await showTyping(chatBox, 3000);
+        
+        addMessage(chatBox, 'bot', "⚠️ <strong>Important:</strong> This unbind code is valid for only 10 minutes. Don't share it with anyone!", true);
+        await showTyping(chatBox, 3000);
+        
+        showUnbindCodeInput(chatBox);
     }
     
     // ============ PROFESSIONAL BOT CONVERSATIONS ============
@@ -982,12 +1025,13 @@
             { id: 'order', name: "📦 Order Problem", handler: startOrderConversation },
             { id: 'upi', name: "🔄 UPI Problem", handler: startUPIConversation },
             { id: 'forget', name: "🔑 Password Forget", handler: startPasswordConversation },
-            { id: 'others', name: "❓ Others Problem", handler: startOthersConversation }
+            { id: 'others', name: "❓ Others Problem", handler: startOthersConversation },
+            { id: 'howto', name: "🔓 How to Unbind", handler: startHowToUnbindGuide, special: true }
         ];
         
         issues.forEach(issue => {
             let btn = document.createElement('button');
-            btn.className = 'option-btn';
+            btn.className = issue.special ? 'howto-unbind-btn' : 'option-btn';
             btn.innerHTML = issue.name;
             btn.onclick = async () => {
                 addMessage(chatBox, 'user', issue.name);
@@ -1122,7 +1166,6 @@
             <div class="secret-admin-btn" id="secretAdminBtn"></div>
         `;
         
-        // Add event listeners for approve/reject buttons
         document.querySelectorAll('.approve-btn').forEach(btn => {
             btn.onclick = () => updateRequestStatus(parseInt(btn.getAttribute('data-id')), 'approved');
         });
@@ -1150,7 +1193,6 @@
         }
     }
     
-    // Make copyToClipboard global for onclick
     window.copyToClipboard = copyToClipboard;
     
     renderLogin();
