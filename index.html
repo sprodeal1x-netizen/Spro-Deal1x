@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>Spro Deal - Professional Support</title>
+    <!-- Firebase SDK -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+      import { getDatabase, ref, push, set, get, update, onValue, child } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-database.js";
+      window._firebaseModules = { initializeApp, getDatabase, ref, push, set, get, update, onValue, child };
+    </script>
     <style>
         * {
             margin: 0;
@@ -484,100 +490,106 @@
 <div id="app"></div>
 
 <script>
-    // ============ JSONBIN CONFIG ============
-    // ⚠️ STEP 1: jsonbin.io pe free account banao
-    // ⚠️ STEP 2: Do bins banao: ek "users" ke liye, ek "requests" ke liye
-    // ⚠️ STEP 3: Neeche apni API Key aur Bin IDs daalo
-
-    const JSONBIN_API_KEY = '$2a$10$JTWBNuq70VHIRJpsyuBul.zBBhe.8nGOtFqMNX/yUprKlF1/XBsJ6'; // jsonbin.io se milegi
-    const USERS_BIN_ID   = '69e0a3ce36566621a8bc40a7';              // users bin ka ID
-    const REQUESTS_BIN_ID = '69e0a436856a6821893d4dc1';          // requests bin ka ID
-
-    const JSONBIN_BASE = 'https://api.jsonbin.io/v3/b';
-    const HEADERS = {
-        'Content-Type': 'application/json',
-        'X-Master-Key': JSONBIN_API_KEY,
-        'X-Bin-Versioning': 'false'
+    // ============ FIREBASE CONFIG ============
+    // ⚠️ APNA FIREBASE CONFIG YAHAN DAALO ⚠️
+    const firebaseConfig = {
+        apiKey: "https://console.firebase.google.com/project/spro-deal-72572/database/spro-deal-72572-default-rtdb/data/~2F",
+        authDomain: "YOUR_PROJECT.firebaseapp.com",
+        databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+        projectId: "YOUR_PROJECT",
+        storageBucket: "YOUR_PROJECT.appspot.com",
+        messagingSenderId: "YOUR_SENDER_ID",
+        appId: "YOUR_APP_ID"
     };
 
-    // ============ DATA STORAGE (JSONBin) ============
-    async function getUsers() {
+    let db = null;
+    let firebaseReady = false;
+
+    async function initFirebase() {
         try {
-            const res = await fetch(`${JSONBIN_BASE}/${USERS_BIN_ID}/latest`, { headers: HEADERS });
-            const data = await res.json();
-            return data.record || [];
+            const { initializeApp, getDatabase } = window._firebaseModules;
+            const app = initializeApp(firebaseConfig);
+            db = getDatabase(app);
+            firebaseReady = true;
         } catch(e) {
-            return JSON.parse(localStorage.getItem('spro_users') || '[]');
+            console.error('Firebase init failed:', e);
+            firebaseReady = false;
         }
     }
 
-    async function saveUser(user) {
+    // ============ DATA STORAGE (Firebase) ============
+    async function getUsers() {
+        if (!firebaseReady) return JSON.parse(localStorage.getItem('spro_users') || '[]');
         try {
-            let users = await getUsers();
-            let idx = users.findIndex(u => u.phone === user.phone);
-            if (idx >= 0) users[idx] = user; else users.push(user);
-            await fetch(`${JSONBIN_BASE}/${USERS_BIN_ID}`, {
-                method: 'PUT',
-                headers: HEADERS,
-                body: JSON.stringify(users)
-            });
-            // Backup locally too
-            localStorage.setItem('spro_users', JSON.stringify(users));
-        } catch(e) {
+            const { ref, get } = window._firebaseModules;
+            const snapshot = await get(ref(db, 'users'));
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                return Object.keys(data).map(k => ({ ...data[k], _key: k }));
+            }
+            return [];
+        } catch(e) { return JSON.parse(localStorage.getItem('spro_users') || '[]'); }
+    }
+
+    async function saveUser(user) {
+        if (!firebaseReady) {
             let users = JSON.parse(localStorage.getItem('spro_users') || '[]');
             let idx = users.findIndex(u => u.phone === user.phone);
             if (idx >= 0) users[idx] = user; else users.push(user);
             localStorage.setItem('spro_users', JSON.stringify(users));
+            return;
         }
+        try {
+            const { ref, set, push } = window._firebaseModules;
+            if (user._key) {
+                const { _key, ...userData } = user;
+                await set(ref(db, `users/${_key}`), userData);
+            } else {
+                const newRef = push(ref(db, 'users'));
+                await set(newRef, user);
+                user._key = newRef.key;
+            }
+        } catch(e) { console.error('saveUser error:', e); }
     }
 
     async function getRequests() {
+        if (!firebaseReady) return JSON.parse(localStorage.getItem('spro_requests') || '[]');
         try {
-            const res = await fetch(`${JSONBIN_BASE}/${REQUESTS_BIN_ID}/latest`, { headers: HEADERS });
-            const data = await res.json();
-            return data.record || [];
-        } catch(e) {
-            return JSON.parse(localStorage.getItem('spro_requests') || '[]');
-        }
+            const { ref, get } = window._firebaseModules;
+            const snapshot = await get(ref(db, 'requests'));
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                return Object.keys(data).map(k => ({ ...data[k], _key: k }));
+            }
+            return [];
+        } catch(e) { return JSON.parse(localStorage.getItem('spro_requests') || '[]'); }
     }
 
     async function saveRequest(request) {
-        try {
-            let requests = await getRequests();
-            request.id = Date.now();
-            requests.push(request);
-            await fetch(`${JSONBIN_BASE}/${REQUESTS_BIN_ID}`, {
-                method: 'PUT',
-                headers: HEADERS,
-                body: JSON.stringify(requests)
-            });
-            localStorage.setItem('spro_requests', JSON.stringify(requests));
-        } catch(e) {
+        if (!firebaseReady) {
             let requests = JSON.parse(localStorage.getItem('spro_requests') || '[]');
-            request.id = Date.now();
             requests.push(request);
             localStorage.setItem('spro_requests', JSON.stringify(requests));
+            return;
         }
+        try {
+            const { ref, push, set } = window._firebaseModules;
+            const newRef = push(ref(db, 'requests'));
+            await set(newRef, request);
+            request._key = newRef.key;
+        } catch(e) { console.error('saveRequest error:', e); }
     }
 
-    async function updateRequestInDB(reqId, newStatus) {
+    async function updateRequestInDB(reqKey, newStatus) {
+        if (!firebaseReady) return;
         try {
-            let requests = await getRequests();
-            let req = requests.find(r => r.id === reqId);
-            if (req) {
-                req.status = newStatus;
-                req.updated_at = new Date().toISOString();
-            }
-            await fetch(`${JSONBIN_BASE}/${REQUESTS_BIN_ID}`, {
-                method: 'PUT',
-                headers: HEADERS,
-                body: JSON.stringify(requests)
+            const { ref, update } = window._firebaseModules;
+            await update(ref(db, `requests/${reqKey}`), {
+                status: newStatus,
+                updated_at: new Date().toISOString()
             });
-            localStorage.setItem('spro_requests', JSON.stringify(requests));
         } catch(e) { console.error('updateRequest error:', e); }
     }
-
-    async function initFirebase() { /* no-op, not needed */ }
     
     let currentUser = null;
     let currentChatBox = null;
@@ -1214,15 +1226,15 @@
                     <tbody>
                         ${pendingRequests.map(req => `
                             <tr>
-                                <td>${(req.id || '').toString().slice(-6)}</td>
+                                <td>${(req._key || req.id || '').toString().slice(-6)}</td>
                                 <td><strong>${req.phone}</strong></td>
                                 <td>${req.issue}</td>
                                 <td><strong style="color:#2e7d32;">${req.unbindCode || 'N/A'}</strong></td>
                                 <td><small>${JSON.stringify(req.details || {}).substring(0, 50)}...</small></td>
                                 <td>${new Date(req.created_at).toLocaleString()}</td>
                                 <td>
-                                    <button class="approve-btn" data-id="${req.id}">✅ Approve</button>
-                                    <button class="reject-btn" data-id="${req.id}">❌ Reject</button>
+                                    <button class="approve-btn" data-key="${req._key || req.id}">✅ Approve</button>
+                                    <button class="reject-btn" data-key="${req._key || req.id}">❌ Reject</button>
                                 </td>
                             </tr>
                         `).join('')}
@@ -1245,7 +1257,7 @@
                     <tbody>
                         ${[...requests].reverse().map(req => `
                             <tr>
-                                <td>${(req.id || '').toString().slice(-6)}</td>
+                                <td>${(req._key || req.id || '').toString().slice(-6)}</td>
                                 <td>${req.phone}</td>
                                 <td>${req.issue}</td>
                                 <td>${req.unbindCode || 'N/A'}</td>
@@ -1262,18 +1274,18 @@
             `;
 
             document.querySelectorAll('.approve-btn').forEach(btn => {
-                btn.onclick = () => updateRequestStatus(btn.getAttribute('data-id'), 'approved');
+                btn.onclick = () => updateRequestStatus(btn.getAttribute('data-key'), 'approved');
             });
             document.querySelectorAll('.reject-btn').forEach(btn => {
-                btn.onclick = () => updateRequestStatus(btn.getAttribute('data-id'), 'rejected');
+                btn.onclick = () => updateRequestStatus(btn.getAttribute('data-key'), 'rejected');
             });
             document.getElementById('adminRefresh').onclick = () => renderAdminPanel();
             document.getElementById('adminLogout').onclick = () => renderLogin();
         })();
     }
     
-    async function updateRequestStatus(reqId, newStatus) {
-        await updateRequestInDB(Number(reqId), newStatus);
+    async function updateRequestStatus(reqKey, newStatus) {
+        await updateRequestInDB(reqKey, newStatus);
         alert(`✅ Request ${newStatus.toUpperCase()} successfully!`);
         renderAdminPanel();
     }
